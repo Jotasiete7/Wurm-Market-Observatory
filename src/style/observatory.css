@@ -1,5 +1,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap');
 
+
 /* ─── TOKENS ─────────────────────────────────────────── */
 :root {
   --parch: #f4efe4;
@@ -22,6 +23,7 @@
   --font-title: 'Playfair Display', Georgia, serif;
   --font-fell: 'IM Fell English', Georgia, serif;
   --font-mono: 'JetBrains Mono', 'Courier New', monospace;
+  --hatch: repeating-linear-gradient(135deg, var(--gap) 0, var(--gap) 1.5px, transparent 1.5px, transparent 5px);
 
   --radius: 4px;
   --radius-lg: 8px;
@@ -155,7 +157,7 @@ p  { line-height: 1.75; color: var(--ink-2); }
 }
 .cov-bar-gap {
   position: absolute; top: 0; height: 100%;
-  background: repeating-linear-gradient(90deg, var(--gap) 0, var(--gap) 2px, transparent 2px, transparent 6px);
+  background: var(--hatch);
 }
 .cov-legend {
   display: flex;
@@ -168,7 +170,7 @@ p  { line-height: 1.75; color: var(--ink-2); }
 .cov-swatch { width: 14px; height: 5px; border-radius: 1px; }
 .cov-swatch.covered { background: var(--amber); }
 .cov-swatch.gap {
-  background: repeating-linear-gradient(90deg, var(--gap) 0, var(--gap) 2px, transparent 2px, transparent 6px);
+  background: var(--hatch);
   border: 0.5px solid var(--border);
 }
 
@@ -186,6 +188,10 @@ p  { line-height: 1.75; color: var(--ink-2); }
   position: relative;
   cursor: default;
   transition: opacity 0.15s;
+}
+.timeline-seg.gap-seg {
+  background: var(--hatch) !important;
+  border: 0.5px solid var(--border);
 }
 .timeline-seg:hover { opacity: 0.8; }
 .timeline-seg-tooltip {
@@ -388,10 +394,85 @@ p  { line-height: 1.75; color: var(--ink-2); }
 ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--amber-light); }
 
+/* ─── FIELD ANNOTATIONS ──────────────────────────────── */
+.field-notes {
+  margin-top: 1rem;
+  border-top: 0.5px solid var(--gap-bg);
+  padding-top: 0.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+.fn-item { display: flex; gap: 0.75rem; align-items: flex-start; }
+.fn-tick {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--amber);
+  min-width: 52px;
+  padding-top: 2px;
+  letter-spacing: 0.3px;
+  flex-shrink: 0;
+}
+.fn-text {
+  font-family: var(--font-fell);
+  font-size: 0.72rem;
+  color: var(--ink-3);
+  line-height: 1.7;
+  font-style: italic;
+}
+.fn-text strong { font-style: normal; color: var(--ink-2); font-weight: 400; }
+
+/* ─── RECENT OBSERVATIONS ────────────────────────────── */
+.obs-items { display: flex; flex-direction: column; }
+.obs-item {
+  padding: 0.625rem 0;
+  border-bottom: 0.5px solid var(--gap-bg);
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+}
+.obs-item:last-child { border-bottom: none; }
+.obs-dot {
+  width: 4px; height: 4px;
+  border-radius: 50%;
+  background: var(--amber);
+  flex-shrink: 0;
+  margin-top: 6px;
+}
+.obs-text {
+  font-family: var(--font-fell);
+  font-size: 0.78rem;
+  color: var(--ink-2);
+  line-height: 1.7;
+  font-style: italic;
+}
+.obs-text strong { font-style: normal; color: var(--ink); font-weight: 400; }
+.obs-meta {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--ink-4);
+  margin-top: 3px;
+}
+
 /* ─── PRINT HINT ──────────────────────────────────────── */
 .print-hint {
   font-size: 0.65rem;
   color: var(--ink-4);
   font-style: italic;
   line-height: 1.6;
+  font-family: var(--font-fell);
 }
+
+/* ─── LENS STATUS UNCHARTED ──────────────────────────── */
+.lens-status.uncharted { background: var(--gap-bg); color: var(--ink-4); }
+
+/* ─── LENS VERSION MARK ───────────────────────────────── */
+.lens-version {
+  position: absolute;
+  top: 8px; right: 10px;
+  font-family: var(--font-fell);
+  font-size: 0.6rem;
+  color: var(--ink-4);
+  font-style: italic;
+}
+

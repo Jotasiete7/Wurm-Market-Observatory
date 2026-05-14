@@ -5,6 +5,7 @@ toc: false
 
 ```js
 import * as Plot from "npm:@observablehq/plot";
+import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
 
 const meta   = await FileAttachment("../data/corpus-meta.json").json();
@@ -19,7 +20,7 @@ const corpus = meta.active;
     <div style="margin-bottom: 0.5rem">
       <a href="/" style="font-size:0.7rem;color:var(--amber);text-decoration:none;letter-spacing:0.5px">← Observatory</a>
       <span style="font-size:0.7rem;color:var(--ink-4);margin:0 0.5rem">/</span>
-      <span style="font-size:0.7rem;color:var(--ink-4);letter-spacing:0.5px">Lens</span>
+      <span style="font-size:0.7rem;color:var(--ink-4);letter-spacing:0.5px">Lens · v0.1</span>
     </div>
     <h1 style="font-family:var(--font-title);font-size:2rem;font-weight:400;margin-bottom:0.5rem">Seller Activity</h1>
     <p style="font-size:0.75rem;color:var(--ink-3);max-width:480px;line-height:1.7">
@@ -33,7 +34,7 @@ const corpus = meta.active;
     This lens counts seller <em>mentions</em> in the trade channel corpus, not confirmed transactions.
     A seller appearing 50 times may have listed one item repeatedly or completed many trades —
     the corpus does not distinguish. Price data reflects asked prices, not agreed prices.
-    Periods marked with hatching contain no data and are not interpolated.
+    Periods marked with diagonal hatching contain no data and are <em>not interpolated</em>.
     <strong>Coverage: ${Math.round(data.coverage * 100)}%.</strong>
   </div>
 
@@ -46,11 +47,16 @@ const corpus = meta.active;
       <div class="corpus-stat-label" style="margin-bottom:4px">Corpus coverage — ${corpus.period}</div>
       <div class="cov-bar-track">
         <div class="cov-bar-fill" style="width:${Math.round(data.coverage*100)}%"></div>
+        <div class="cov-bar-gap" style="left:18%;width:11%;top:0;bottom:0;height:7px"></div>
+        <div class="cov-bar-gap" style="left:43%;width:9%;top:0;bottom:0;height:7px"></div>
+        <div class="cov-bar-gap" style="left:71%;width:29%;top:0;bottom:0;height:7px"></div>
       </div>
-      <div style="font-size:0.65rem;color:var(--ink-4);margin-top:4px">
+      ```js
+      html`<div style="font-size:0.65rem;color:var(--ink-4);margin-top:4px">
         Known gaps:
-        ${corpus.gaps.map(g => html`<span style="color:#c47a3a;margin-right:0.5rem">${g.label}</span>`)}
-      </div>
+        ${corpus.gaps.map(g => html`<span style="color:#c47a3a;margin-right:0.5rem">▲ ${g.label}</span>`)}
+      </div>`
+      ```
     </div>
   </div>
 
@@ -94,22 +100,28 @@ const corpus = meta.active;
       height: 200,
       marginLeft: 40,
       marginRight: 10,
-      style: { fontFamily: "JetBrains Mono, monospace", fontSize: 10, background: "transparent", color: "#7a7568" },
-      x: { label: null, tickFormat: d => `${d}`, ticks: 10 },
+      style: {
+        fontFamily: "JetBrains Mono, monospace",
+        fontSize: 10,
+        background: "transparent",
+        color: "#7a7568"
+      },
+      x: { label: null, ticks: 10 },
       y: { label: null, grid: true, gridColor: "#e4dfd4" },
       marks: [
         Plot.barY(gaps, {
           x: "day",
           y: 320,
-          fill: "repeating-linear-gradient(90deg, #c4bfb2 0, #c4bfb2 2px, transparent 2px, transparent 6px)",
-          opacity: 0.5,
-          title: d => "No data — gap period"
+          fill: "#e0dbd0",
+          opacity: 0.6,
+          rx: 1,
+          title: () => "No data — gap period (not interpolated)"
         }),
         Plot.barY(observed, {
           x: "day",
           y: "count",
           fill: "#b07d2a",
-          opacity: 0.75,
+          opacity: 0.72,
           rx: 1,
           title: d => `Day ${d.day}: ${d.count} listings observed`
         }),
@@ -122,9 +134,25 @@ const corpus = meta.active;
       <div class="cov-legend-item"><div class="cov-swatch covered"></div><span>observed activity</span></div>
       <div class="cov-legend-item"><div class="cov-swatch gap"></div><span>no data (gap — not interpolated)</span></div>
     </div>
+
+    <!-- FIELD ANNOTATIONS -->
+    <div class="field-notes">
+      <div class="fn-item">
+        <span class="fn-tick">Nov 6–8</span>
+        <span class="fn-text">Trade visibility drops sharply. <strong>Archival absence or genuine market lull</strong> — indeterminate from corpus alone.</span>
+      </div>
+      <div class="fn-item">
+        <span class="fn-tick">Nov 20–21</span>
+        <span class="fn-text">Observed surge in listings. <strong>Weekend effect confirmed.</strong> Weapon category disproportionately represented.</span>
+      </div>
+      <div class="fn-item">
+        <span class="fn-tick">Nov 24–30</span>
+        <span class="fn-text">Final week absent from corpus. <strong>Possible upload gap in archive.</strong> Late-month patterns unverifiable.</span>
+      </div>
+    </div>
   </div>
 
-  <!-- CATEGORY CHART -->
+  <!-- CATEGORY + RANKING -->
   <div class="obs-grid-2" style="margin-bottom:1.25rem;gap:1rem">
 
     <div class="chart-wrap">
@@ -132,10 +160,15 @@ const corpus = meta.active;
       ```js
       Plot.plot({
         width: 320,
-        height: 180,
-        marginLeft: 80,
+        height: 200,
+        marginLeft: 82,
         marginRight: 20,
-        style: { fontFamily: "JetBrains Mono, monospace", fontSize: 10, background: "transparent", color: "#7a7568" },
+        style: {
+          fontFamily: "JetBrains Mono, monospace",
+          fontSize: 10,
+          background: "transparent",
+          color: "#7a7568"
+        },
         x: { label: null },
         y: { label: null },
         marks: [
@@ -143,7 +176,7 @@ const corpus = meta.active;
             x: "count",
             y: "category",
             fill: "#b07d2a",
-            opacity: d => 0.4 + d.pct * 1.4,
+            opacity: d => 0.35 + d.pct * 1.3,
             rx: 1,
             sort: { y: "-x" },
             title: d => `${d.category}: ${d.count} (${Math.round(d.pct*100)}%)`
@@ -154,47 +187,41 @@ const corpus = meta.active;
       ```
     </div>
 
-    <!-- TOP SELLERS RANKING -->
     <div class="chart-wrap">
-      <div class="chart-header" style="margin-bottom:0.75rem">
-        <div class="obs-label" style="margin-bottom:0">Top sellers by listing count</div>
-      </div>
-      <div>
-        ```js
-        const maxCount = data.top_sellers[0].count;
-        html`<div>
-          ${data.top_sellers.map((s, i) => html`
-            <div class="rank-row">
-              <span class="rank-n">${i + 1}</span>
-              <span class="rank-name">${s.name}</span>
-              <div class="rank-bar-cell">
-                <div class="rank-bar" style="width:${Math.round(s.count / maxCount * 100)}px"></div>
-                <span class="rank-count">${s.count}</span>
-              </div>
-              <span class="rank-cov">${Math.round(s.coverage * 100)}%</span>
+      <div class="obs-label" style="margin-bottom:0.75rem">Top sellers by listing count</div>
+      ```js
+      const maxCount = data.top_sellers[0].count;
+      html`<div>
+        ${data.top_sellers.map((s, i) => html`
+          <div class="rank-row">
+            <span class="rank-n">${i + 1}</span>
+            <span class="rank-name">${s.name}</span>
+            <div class="rank-bar-cell">
+              <div class="rank-bar" style="width:${Math.round(s.count / maxCount * 100)}px"></div>
+              <span class="rank-count">${s.count}</span>
             </div>
-          `)}
-          <div style="font-size:0.6rem;color:var(--ink-4);margin-top:8px;line-height:1.6">
-            % shown is per-seller corpus coverage. Low coverage sellers may be undercounted.
+            <span class="rank-cov">${Math.round(s.coverage * 100)}%</span>
           </div>
-        </div>`
-        ```
-      </div>
+        `)}
+        <p class="print-hint" style="margin-top:8px">
+          % is per-seller corpus coverage. Low-coverage sellers may be undercounted.
+        </p>
+      </div>`
+      ```
     </div>
 
   </div>
 
-  <!-- CORPUS REFERENCE -->
+  <!-- SOURCE CORPUS -->
   <div class="obs-section">
     <div class="obs-label">Source corpus</div>
     ${CorpusHealthCard(corpus)}
   </div>
 
-  <!-- LENS FOOTER -->
   <div style="margin-top:2rem;padding-top:1rem;border-top:0.5px solid var(--border)">
     <p class="print-hint">
       Lens version 0.1.0 · Generated from ${data.corpus} ·
-      This lens will be regenerated when a new corpus is loaded into the pipeline.
+      Regenerated when a new corpus is loaded into the pipeline.
     </p>
   </div>
 
