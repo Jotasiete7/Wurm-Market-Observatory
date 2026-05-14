@@ -1,0 +1,5 @@
+node_modules/
+.observablehq/cache/
+dist/
+.DS_Store
+*.log

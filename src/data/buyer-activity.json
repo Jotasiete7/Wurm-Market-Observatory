@@ -1,0 +1,58 @@
+{
+  "corpus": "WurmArchive_SFI_2024-11_Restored_Cov71.txt",
+  "coverage": 0.71,
+  "summary": {
+    "unique_buyers": 142,
+    "total_wtb_signals": 843,
+    "top_category": "Tools",
+    "top_category_pct": 0.38,
+    "peak_day": "Sunday",
+    "peak_day_multiplier": 1.4
+  },
+  "daily_activity": [
+    { "day": 1, "count": 25, "gap": false },
+    { "day": 2, "count": 28, "gap": false },
+    { "day": 3, "count": 31, "gap": false },
+    { "day": 4, "count": 22, "gap": false },
+    { "day": 5, "count": 19, "gap": false },
+    { "day": 6, "count": 0, "gap": true },
+    { "day": 7, "count": 0, "gap": true },
+    { "day": 8, "count": 0, "gap": true },
+    { "day": 9, "count": 35, "gap": false },
+    { "day": 10, "count": 42, "gap": false },
+    { "day": 11, "count": 38, "gap": false },
+    { "day": 12, "count": 45, "gap": false },
+    { "day": 13, "count": 50, "gap": false },
+    { "day": 14, "count": 0, "gap": true },
+    { "day": 15, "count": 0, "gap": true },
+    { "day": 16, "count": 0, "gap": true },
+    { "day": 17, "count": 22, "gap": false },
+    { "day": 18, "count": 24, "gap": false },
+    { "day": 19, "count": 29, "gap": false },
+    { "day": 20, "count": 33, "gap": false },
+    { "day": 21, "count": 27, "gap": false },
+    { "day": 22, "count": 31, "gap": false },
+    { "day": 23, "count": 35, "gap": false },
+    { "day": 24, "count": 0, "gap": true },
+    { "day": 25, "count": 0, "gap": true },
+    { "day": 26, "count": 0, "gap": true },
+    { "day": 27, "count": 0, "gap": true },
+    { "day": 28, "count": 0, "gap": true },
+    { "day": 29, "count": 0, "gap": true },
+    { "day": 30, "count": 0, "gap": true }
+  ],
+  "by_category": [
+    { "category": "Tools", "count": 320, "pct": 0.38 },
+    { "category": "Materials", "count": 210, "pct": 0.25 },
+    { "category": "Animals", "count": 145, "pct": 0.17 },
+    { "category": "Weapons", "count": 98, "pct": 0.12 },
+    { "category": "Enchantments", "count": 70, "pct": 0.08 }
+  ],
+  "top_buyers": [
+    { "name": "Valkyrie", "count": 42, "coverage": 0.85 },
+    { "name": "Logar", "count": 38, "coverage": 0.72 },
+    { "name": "Mistwalker", "count": 31, "coverage": 0.91 },
+    { "name": "Shadow", "count": 29, "coverage": 0.55 },
+    { "name": "Ironbeard", "count": 25, "coverage": 0.68 }
+  ]
+}
