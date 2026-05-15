@@ -38,7 +38,7 @@ export function CorpusHealthCard(corpus) {
         </div>
         <div>
           <div class="corpus-stat-label">${t("known_gaps")}</div>
-          <div class="corpus-stat-val warn">${corpus.gaps.length} periods</div>
+          <div class="corpus-stat-val warn">${corpus.gaps.length} ${t("periods")}</div>
         </div>
         <div>
           <div class="corpus-stat-label">${t("log_lines")}</div>

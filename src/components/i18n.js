@@ -38,7 +38,8 @@ const translations = {
     confidence: "Confiança",
     signals: "Sinais de Demanda",
     explorer_title: "Explorador de Corpus",
-    methodology_title: "Metodologia Arqueológica"
+    methodology_title: "Metodologia Arqueológica",
+    periods: "períodos"
   },
   en: {
     back: "← Observatory",
@@ -71,7 +72,8 @@ const translations = {
     confidence: "Confidence",
     signals: "Demand Signals",
     explorer_title: "Corpus Explorer",
-    methodology_title: "Archaeological Methodology"
+    methodology_title: "Archaeological Methodology",
+    periods: "periods"
   }
 };
 

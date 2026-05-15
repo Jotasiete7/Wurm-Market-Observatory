@@ -549,3 +549,49 @@ aside[id="observablehq-sidebar"] section {
   margin-top: 1rem !important;
   padding-top: 1rem !important;
 }
+
+/* FIX SIDEBAR OVERFLOW */
+#observablehq-sidebar {
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  overflow-y: auto;
+  z-index: 1000;
+}
+
+#observablehq-footer {
+  margin-top: 4rem;
+  padding: 2rem 0;
+  border-top: 1px solid var(--border-light);
+  color: var(--ink-4);
+  font-size: 0.7rem;
+  font-family: var(--font-mono);
+}
+
+#observablehq-footer a {
+  color: var(--amber) !important;
+  text-decoration: none;
+}
+
+/* DROPDOWN STYLING */
+select {
+  background-color: #1a1814 !important;
+  color: var(--amber) !important;
+  border: 1px solid var(--border) !important;
+  border-radius: 4px;
+  padding: 2px 8px;
+  font-family: var(--font-mono);
+  cursor: pointer;
+  outline: none;
+}
+
+select option {
+  background-color: #1a1814;
+  color: var(--amber);
+}
+
+select:hover {
+  border-color: var(--amber) !important;
+  box-shadow: 0 0 5px rgba(212, 162, 89, 0.2);
+}
