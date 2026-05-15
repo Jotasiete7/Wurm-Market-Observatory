@@ -1,4 +1,7 @@
----
+import sys
+
+# PEDANTIC CLEAN REWRITE
+content = r'''---
 title: Seller Activity Lens
 toc: false
 ---
@@ -51,14 +54,12 @@ const corpus = meta.active;
         <div class="cov-bar-gap" style="left:43%;width:9%;top:0;bottom:0;height:7px"></div>
         <div class="cov-bar-gap" style="left:71%;width:29%;top:0;bottom:0;height:7px"></div>
       </div>
-
 ```js
 html`<div style="font-size:0.65rem;color:var(--ink-4);margin-top:4px">
   Known gaps:
   ${corpus.gaps.map(g => html`<span style="color:#c47a3a;margin-right:0.5rem">▲ ${g.label}</span>`)}
 </div>`
 ```
-
     </div>
   </div>
 
@@ -159,7 +160,6 @@ Plot.plot({
 
     <div class="chart-wrap">
       <div class="obs-label">Listings by category</div>
-
 ```js
 Plot.plot({
   width: 320,
@@ -188,12 +188,10 @@ Plot.plot({
   ]
 })
 ```
-
     </div>
 
     <div class="chart-wrap">
       <div class="obs-label" style="margin-bottom:0.75rem">Top sellers by listing count</div>
-
 ```js
 const maxCount = data.top_sellers[0].count;
 html`<div>
@@ -213,7 +211,6 @@ html`<div>
   </p>
 </div>`
 ```
-
     </div>
 
   </div>
@@ -272,7 +269,6 @@ display(html`
 </div>
 `);
 ```
-
   </div>
 
   <!-- SOURCE CORPUS -->
@@ -289,3 +285,8 @@ display(html`
   </div>
 
 </div>
+'''
+
+with open('src/lenses/seller.md', 'w', encoding='utf-8', newline='\n') as f:
+    f.write(content)
+print("Done writing seller.md")
