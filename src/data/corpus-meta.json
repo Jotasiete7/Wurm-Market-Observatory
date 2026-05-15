@@ -1,1 +1,112 @@
-{"active": {"filename": "WurmArchive_NFI_Restored_12m.txt", "server": "SFI", "period": "Jan\u2013Dec 2025", "period_start": "2025-01-01", "period_end": "2025-12-31", "coverage": 0.9507, "log_lines": 77099, "gaps": [{"start": "2025-03-21", "end": "2025-03-21", "label": "Mar 21"}, {"start": "2025-03-23", "end": "2025-03-31", "label": "Mar 23\u201331"}, {"start": "2025-04-03", "end": "2025-04-03", "label": "Apr 3"}, {"start": "2025-04-05", "end": "2025-04-05", "label": "Apr 5"}, {"start": "2025-04-07", "end": "2025-04-10", "label": "Apr 7\u201310"}, {"start": "2025-06-20", "end": "2025-06-20", "label": "Jun 20"}, {"start": "2025-07-26", "end": "2025-07-26", "label": "Jul 26"}], "generated_at": "2026-05-15", "pipeline_version": "1.0.0"}, "all_corpora": [{"month": "Jan 2025", "coverage": 1.0, "server": "SFI"}, {"month": "Feb 2025", "coverage": 1.0, "server": "SFI"}, {"month": "Mar 2025", "coverage": 0.6774, "server": "SFI"}, {"month": "Apr 2025", "coverage": 0.8, "server": "SFI"}, {"month": "May 2025", "coverage": 1.0, "server": "SFI"}, {"month": "Jun 2025", "coverage": 0.9667, "server": "SFI"}, {"month": "Jul 2025", "coverage": 0.9677, "server": "SFI"}, {"month": "Aug 2025", "coverage": 1.0, "server": "SFI"}, {"month": "Sep 2025", "coverage": 1.0, "server": "SFI"}, {"month": "Oct 2025", "coverage": 1.0, "server": "SFI"}, {"month": "Nov 2025", "coverage": 1.0, "server": "SFI"}, {"month": "Dec 2025", "coverage": 1.0, "server": "SFI"}]}
+{
+  "active": {
+    "filename": "WurmArchive_NFI_Restored_12m.txt",
+    "server": "SFI",
+    "period": "Jan–Dec 2025",
+    "period_start": "2025-01-01",
+    "period_end": "2025-12-31",
+    "coverage": 0.9507,
+    "log_lines": 77099,
+    "gaps": [
+      {
+        "start": "2025-03-21",
+        "end": "2025-03-21",
+        "label": "Mar 21"
+      },
+      {
+        "start": "2025-03-23",
+        "end": "2025-03-31",
+        "label": "Mar 23–31"
+      },
+      {
+        "start": "2025-04-03",
+        "end": "2025-04-03",
+        "label": "Apr 3"
+      },
+      {
+        "start": "2025-04-05",
+        "end": "2025-04-05",
+        "label": "Apr 5"
+      },
+      {
+        "start": "2025-04-07",
+        "end": "2025-04-10",
+        "label": "Apr 7–10"
+      },
+      {
+        "start": "2025-06-20",
+        "end": "2025-06-20",
+        "label": "Jun 20"
+      },
+      {
+        "start": "2025-07-26",
+        "end": "2025-07-26",
+        "label": "Jul 26"
+      }
+    ],
+    "generated_at": "2026-05-15",
+    "pipeline_version": "1.0.0"
+  },
+  "all_corpora": [
+    {
+      "month": "Jan 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Feb 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Mar 2025",
+      "coverage": 0.6774,
+      "server": "SFI"
+    },
+    {
+      "month": "Apr 2025",
+      "coverage": 0.8,
+      "server": "SFI"
+    },
+    {
+      "month": "May 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Jun 2025",
+      "coverage": 0.9667,
+      "server": "SFI"
+    },
+    {
+      "month": "Jul 2025",
+      "coverage": 0.9677,
+      "server": "SFI"
+    },
+    {
+      "month": "Aug 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Sep 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Oct 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Nov 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Dec 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    }
+  ]
+}
