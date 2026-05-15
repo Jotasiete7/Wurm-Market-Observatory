@@ -7,6 +7,7 @@ import re
 from datetime import date
 from collections import defaultdict
 from core import ParseResult, CoverageResult
+import parser_utils
 
 
 # ─── Seller Activity Lens ────────────────────────────────────────────────────
@@ -40,11 +41,29 @@ def process_seller_lens(result: ParseResult, cov: CoverageResult, config: dict) 
     seller_days    = defaultdict(set)   # player → set of days active
     seller_counts  = defaultdict(int)   # player → total mentions
     seller_msgs    = defaultdict(list)  # player → list of messages
+    seller_items   = defaultdict(list)  # player → parsed items
 
     for line in wts_lines:
         seller_days[line.player].add(line.day)
         seller_counts[line.player] += 1
         seller_msgs[line.player].append(line.message)
+        
+        # Advanced Parsing
+        price = parser_utils.normalize_price(line.message)
+        ql, qty = parser_utils.extract_ql_and_qty(line.message)
+        rarity = parser_utils.extract_rarity(line.message)
+        item_id = parser_utils.resolve_item_identity(line.message, config)
+        
+        if item_id["id"] != "unknown":
+            seller_items[line.player].append({
+                "id": item_id["id"],
+                "name": item_id["name"],
+                "price": price,
+                "qty": qty,
+                "ql": ql,
+                "rarity": rarity,
+                "date": line.day.isoformat()
+            })
 
     # Coverage per seller (% of corpus-covered days they appeared in)
     covered_days = set(cov.days_found)
@@ -60,7 +79,8 @@ def process_seller_lens(result: ParseResult, cov: CoverageResult, config: dict) 
             "name":     player,
             "count":    count,
             "coverage": seller_cov,
-            "top_item": top_item
+            "top_item": top_item,
+            "parsed_items": seller_items[player]
         })
 
     sellers.sort(key=lambda s: s["count"], reverse=True)
@@ -148,11 +168,29 @@ def process_buyer_lens(result: ParseResult, cov: CoverageResult, config: dict) -
     buyer_counts = defaultdict(int)
     buyer_days   = defaultdict(set)
     buyer_msgs   = defaultdict(list)
+    buyer_items  = defaultdict(list)
 
     for line in wtb_lines:
         buyer_counts[line.player] += 1
         buyer_days[line.player].add(line.day)
         buyer_msgs[line.player].append(line.message)
+
+        # Advanced Parsing
+        price = parser_utils.normalize_price(line.message)
+        ql, qty = parser_utils.extract_ql_and_qty(line.message)
+        rarity = parser_utils.extract_rarity(line.message)
+        item_id = parser_utils.resolve_item_identity(line.message, config)
+        
+        if item_id["id"] != "unknown":
+            buyer_items[line.player].append({
+                "id": item_id["id"],
+                "name": item_id["name"],
+                "price": price,
+                "qty": qty,
+                "ql": ql,
+                "rarity": rarity,
+                "date": line.day.isoformat()
+            })
 
     covered_days  = set(cov.days_found)
     total_covered = max(len(covered_days), 1)
@@ -167,7 +205,8 @@ def process_buyer_lens(result: ParseResult, cov: CoverageResult, config: dict) -
             "name":     player,
             "count":    count,
             "coverage": buyer_cov,
-            "top_item": top_item
+            "top_item": top_item,
+            "parsed_items": buyer_items[player]
         })
 
     buyers.sort(key=lambda b: b["count"], reverse=True)

@@ -13,7 +13,37 @@
     "min_message_length": 5,
     "remove_duplicate_lines": true,
     "wts_keywords": ["wts", "selling", "for sale", "vendo", "fs", "sold"],
-    "wtb_keywords": ["wtb", "buying", "looking for", "compro", "lb", "want to buy"]
+    "wtb_keywords": ["wtb", "buying", "looking for", "compro", "lb", "want to buy"],
+    "aliases": {
+      "lg anvil": "large anvil",
+      "sm anvil": "small anvil",
+      "lg maul": "large maul",
+      "huge axe": "huge axe",
+      "imp": "improve",
+      "cod": "cod filled",
+      "sleeping powder": "sleep powder",
+      "farming": "farm"
+    },
+    "ignored_terms": [
+      "rare", "supreme", "fantastic", "common", "unfinished", "bulk", "ql", "wt", "dmg", "ea", "each", "x", "completed", "quality"
+    ],
+    "ignored_prefixes": [
+      "impure", "shattered", "unfinished", "corroded", "broken", "damaged", "crumbling", "rusty"
+    ],
+    "service_terms": [
+      "cleaning", "organizing", "sorting", "bulk", "service", "recruitment", "looking for", "hiring", "selling", "buying", "trading"
+    ]
+  },
+
+  "semantic_items": {
+    "sleep_powder": {
+      "collapseMaterials": true,
+      "displayName": "Sleep Powder"
+    },
+    "healing_cover": {
+      "collapseMaterials": true,
+      "displayName": "Healing Cover"
+    }
   },
 
   "categories": {
