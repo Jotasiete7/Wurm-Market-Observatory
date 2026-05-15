@@ -109,6 +109,14 @@ def resolve_item_identity(raw_text: str, config: dict) -> dict:
         
     cleaned = raw_name.lower().strip()
     
+    # 2. Strip Commercial Prefixes (WTS, WTB, etc.)
+    prefixes = config.get("cleaning", {}).get("wts_keywords", []) + \
+               config.get("cleaning", {}).get("wtb_keywords", []) + \
+               ["wtb", "wts", "buying", "selling", "want", "to", "buy", "sell"]
+    
+    for pref in prefixes:
+        cleaned = re.sub(rf"^\b{re.escape(pref.lower())}\b", "", cleaned).strip()
+
     # If the message contains service terms, flag as unknown
     words = cleaned.split()
     if any(w in service_terms for w in words):
