@@ -106,14 +106,20 @@ class WorkbenchApp:
         nb.pack(fill="both", expand=True, padx=0, pady=0)
 
         self._tab_corpus   = ttk.Frame(nb)
+        self._tab_merge    = ttk.Frame(nb)
+        self._tab_calibrate= ttk.Frame(nb)
         self._tab_settings = ttk.Frame(nb)
         self._tab_run      = ttk.Frame(nb)
 
-        nb.add(self._tab_corpus,   text="  Corpus  ")
-        nb.add(self._tab_settings, text="  Settings  ")
-        nb.add(self._tab_run,      text="  Run  ")
+        nb.add(self._tab_corpus,    text="  Corpus  ")
+        nb.add(self._tab_merge,     text="  Merge  ")
+        nb.add(self._tab_calibrate, text="  Calibrate  ")
+        nb.add(self._tab_settings,  text="  Settings  ")
+        nb.add(self._tab_run,       text="  Run  ")
 
         self._build_corpus_tab(self._tab_corpus)
+        self._build_merge_tab(self._tab_merge)
+        self._build_calibrate_tab(self._tab_calibrate)
         self._build_settings_tab(self._tab_settings)
         self._build_run_tab(self._tab_run)
 
@@ -185,6 +191,258 @@ class WorkbenchApp:
         )
         if path:
             self.txt_path.set(path)
+
+    # ── Tab 2: Merge ─────────────────────────────────────────────────────────
+
+    def _build_merge_tab(self, parent):
+        tk.Label(parent, text="Select multiple .txt files to merge into one corpus before analysis.",
+                 bg=C["bg"], fg=C["fg_dim"], font=FONT_SM).pack(anchor="w", padx=20, pady=(16, 4))
+        tk.Label(parent, text="Duplicates by day are removed. Files are merged chronologically.",
+                 bg=C["bg"], fg=C["fg_faint"], font=FONT_SM).pack(anchor="w", padx=20, pady=(0, 10))
+
+        btn_row = tk.Frame(parent, bg=C["bg"])
+        btn_row.pack(fill="x", padx=20, pady=(0, 8))
+        tk.Button(btn_row, text="Add Files…", command=self._merge_add_files,
+                  bg=C["bg_card"], fg=C["amber"], font=FONT_SM, relief="flat",
+                  padx=10, cursor="hand2",
+                  activebackground=C["border"]).pack(side="left")
+        tk.Button(btn_row, text="Clear List", command=self._merge_clear,
+                  bg=C["bg_card"], fg=C["fg_dim"], font=FONT_SM, relief="flat",
+                  padx=10, cursor="hand2",
+                  activebackground=C["border"]).pack(side="left", padx=(6, 0))
+
+        list_frame = tk.Frame(parent, bg=C["bg_card"],
+                              highlightthickness=1, highlightbackground=C["border"])
+        list_frame.pack(fill="both", expand=True, padx=20, pady=(0, 8))
+        self._merge_listbox = tk.Listbox(list_frame, bg=C["bg_card"], fg=C["fg"],
+                                         font=FONT_SM, relief="flat", selectbackground=C["border"],
+                                         activestyle="none", height=8)
+        self._merge_listbox.pack(side="left", fill="both", expand=True, padx=6, pady=6)
+        sb = ttk.Scrollbar(list_frame, command=self._merge_listbox.yview)
+        sb.pack(side="right", fill="y")
+        self._merge_listbox.configure(yscrollcommand=sb.set)
+
+        self._merge_files = []  # list of Path
+
+        merge_out_row = tk.Frame(parent, bg=C["bg"])
+        merge_out_row.pack(fill="x", padx=20, pady=(0, 6))
+        tk.Label(merge_out_row, text="Save merged file as:", bg=C["bg"],
+                 fg=C["fg_dim"], font=FONT_SM).pack(side="left")
+        self._merge_out_var = tk.StringVar(value="")
+        tk.Entry(merge_out_row, textvariable=self._merge_out_var, bg=C["bg_input"],
+                 fg=C["fg"], font=FONT_MONO, insertbackground=C["fg"],
+                 relief="flat", highlightthickness=1, highlightcolor=C["amber"],
+                 highlightbackground=C["border"], width=36).pack(side="left", padx=(8, 6))
+        tk.Button(merge_out_row, text="Browse…", command=self._merge_pick_out,
+                  bg=C["bg_card"], fg=C["amber"], font=FONT_SM,
+                  relief="flat", padx=8, cursor="hand2").pack(side="left")
+
+        tk.Button(parent, text="⊕  Merge & Load into Corpus tab",
+                  command=self._merge_run,
+                  bg=C["amber_dim"], fg=C["bg"],
+                  font=("JetBrains Mono", 9, "bold"),
+                  relief="flat", padx=14, pady=6, cursor="hand2",
+                  activebackground=C["amber"]
+                  ).pack(anchor="w", padx=20, pady=(0, 10))
+
+        self._merge_status = tk.StringVar(value="")
+        tk.Label(parent, textvariable=self._merge_status, bg=C["bg"],
+                 fg=C["success"], font=FONT_SM).pack(anchor="w", padx=20)
+
+    def _merge_add_files(self):
+        paths = filedialog.askopenfilenames(
+            title="Select Wurm .txt corpus files",
+            filetypes=[("Text files", "*.txt"), ("All files", "*.*")]
+        )
+        for p in paths:
+            if p not in [str(f) for f in self._merge_files]:
+                self._merge_files.append(Path(p))
+                self._merge_listbox.insert("end", f"  {Path(p).name}")
+        if paths and not self._merge_out_var.get():
+            default_out = str(Path(paths[0]).parent / "corpus_merged.txt")
+            self._merge_out_var.set(default_out)
+
+    def _merge_clear(self):
+        self._merge_files.clear()
+        self._merge_listbox.delete(0, "end")
+        self._merge_status.set("")
+
+    def _merge_pick_out(self):
+        path = filedialog.asksaveasfilename(
+            title="Save merged corpus as…",
+            defaultextension=".txt",
+            filetypes=[("Text files", "*.txt")]
+        )
+        if path:
+            self._merge_out_var.set(path)
+
+    def _merge_run(self):
+        if not self._merge_files:
+            messagebox.showwarning("No files", "Add at least one .txt file to merge.")
+            return
+        out_path = self._merge_out_var.get().strip()
+        if not out_path:
+            messagebox.showwarning("No output", "Choose where to save the merged file.")
+            return
+
+        self._merge_status.set("Merging…")
+        self.status.set("Merging files…")
+
+        def run():
+            try:
+                import re
+                DAY_RE = re.compile(r'^Logging started (\d{4}-\d{2}-\d{2})')
+                day_lines = {}   # {date_str: set(lines)}
+                day_order = []   # preserve chronological order
+
+                for fpath in self._merge_files:
+                    current_day = None
+                    with open(fpath, 'r', encoding='utf-8', errors='replace') as f:
+                        for line in f:
+                            line = line.rstrip('\n')
+                            dm = DAY_RE.match(line)
+                            if dm:
+                                current_day = dm.group(1)
+                                if current_day not in day_lines:
+                                    day_lines[current_day] = set()
+                                    day_order.append(current_day)
+                            elif current_day and line.strip():
+                                day_lines[current_day].add(line.strip())
+
+                day_order.sort()
+                output_lines = []
+                for day in day_order:
+                    output_lines.append(f"Logging started {day}")
+                    output_lines.extend(sorted(day_lines[day]))
+                    output_lines.append("")
+
+                with open(out_path, 'w', encoding='utf-8') as f:
+                    f.write('\n'.join(output_lines))
+
+                n_days = len(day_order)
+                n_files = len(self._merge_files)
+                merged_path = out_path
+
+                def finish():
+                    self._merge_status.set(
+                        f"✓ Merged {n_files} files · {n_days} days · saved to {Path(merged_path).name}"
+                    )
+                    self.txt_path.set(merged_path)
+                    self.status.set("Merge complete. Go to Corpus tab and click Scan Corpus.")
+                    messagebox.showinfo("Merge complete",
+                        f"{n_files} files merged into {n_days} unique days.\n"
+                        f"File loaded into Corpus tab — click 'Scan Corpus' to analyse.")
+
+                self.root.after(0, finish)
+
+            except Exception as e:
+                import traceback
+                err = traceback.format_exc()
+                self.root.after(0, lambda: [
+                    self._merge_status.set(f"Error: {e}"),
+                    messagebox.showerror("Merge Error", err)
+                ])
+
+        threading.Thread(target=run, daemon=True).start()
+
+    # ── Tab 3: Calibrate ─────────────────────────────────────────────────────
+
+    def _build_calibrate_tab(self, parent):
+        tk.Label(parent,
+                 text="Paste a few lines of your real .txt here to verify the parser reads them correctly.",
+                 bg=C["bg"], fg=C["fg_dim"], font=FONT_SM).pack(anchor="w", padx=20, pady=(16, 4))
+        tk.Label(parent,
+                 text="The parser expects: [HH:MM:SS] <PlayerName> (ServerName) message text",
+                 bg=C["bg"], fg=C["fg_faint"], font=FONT_SM).pack(anchor="w", padx=20, pady=(0, 8))
+
+        input_frame = tk.Frame(parent, bg=C["bg_card"],
+                               highlightthickness=1, highlightbackground=C["border"])
+        input_frame.pack(fill="x", padx=20, pady=(0, 8))
+        self._calib_input = tk.Text(input_frame, bg=C["bg_card"], fg=C["fg"],
+                                    font=("JetBrains Mono", 8), height=7,
+                                    relief="flat", padx=8, pady=6,
+                                    insertbackground=C["fg"])
+        self._calib_input.pack(fill="x")
+        self._calib_input.insert("end",
+            "Logging started 2024-11-01\n"
+            "[12:34:56] <Valdris> (Xanadu) WTS longsword 90ql 3s\n"
+            "[12:35:10] <IronMere> (Xanadu) WTS plate set 80ql 15s\n"
+        )
+
+        tk.Button(parent, text="↳  Parse & Inspect", command=self._calib_run,
+                  bg=C["amber_dim"], fg=C["bg"],
+                  font=("JetBrains Mono", 9, "bold"),
+                  relief="flat", padx=14, pady=6, cursor="hand2",
+                  activebackground=C["amber"]).pack(anchor="w", padx=20, pady=(0, 8))
+
+        out_frame = tk.Frame(parent, bg=C["bg_card"],
+                             highlightthickness=1, highlightbackground=C["border"])
+        out_frame.pack(fill="both", expand=True, padx=20, pady=(0, 10))
+        self._calib_out = tk.Text(out_frame, bg=C["bg_card"], fg=C["fg"],
+                                  font=("JetBrains Mono", 8), height=10,
+                                  relief="flat", padx=8, pady=6,
+                                  state="disabled", cursor="arrow")
+        self._calib_out.pack(fill="both", expand=True)
+        self._calib_out.tag_configure("ok",    foreground=C["success"])
+        self._calib_out.tag_configure("warn",  foreground=C["warn"])
+        self._calib_out.tag_configure("amber", foreground=C["amber"])
+        self._calib_out.tag_configure("dim",   foreground=C["fg_dim"])
+
+    def _calib_write(self, msg, tag=""):
+        self._calib_out.config(state="normal")
+        self._calib_out.insert("end", msg + "\n", tag)
+        self._calib_out.config(state="disabled")
+
+    def _calib_run(self):
+        import re, tempfile, os
+        text = self._calib_input.get("1.0", "end").strip()
+        if not text:
+            return
+
+        self._calib_out.config(state="normal")
+        self._calib_out.delete("1.0", "end")
+        self._calib_out.config(state="disabled")
+
+        # Write to temp file and parse
+        tmp = Path(tempfile.mktemp(suffix=".txt"))
+        tmp.write_text(text, encoding="utf-8")
+
+        try:
+            result = core.parse_file(str(tmp), self.config)
+            tmp.unlink()
+
+            self._calib_write("─── Parse Result ───", "amber")
+            self._calib_write(f"  Raw lines read:  {result.total_raw_lines}", "dim")
+            self._calib_write(f"  Lines parsed OK: {len(result.lines)}", "ok" if result.lines else "warn")
+            self._calib_write(f"  Lines skipped:   {result.skipped_lines}", "dim")
+            self._calib_write(f"  Days found:      {len(result.days_found)}", "dim")
+            self._calib_write(f"  Servers:         {', '.join(sorted(result.servers_found)) or 'none'}", "dim")
+            self._calib_write("")
+
+            if result.lines:
+                self._calib_write("─── First 5 parsed lines ───", "amber")
+                for line in result.lines[:5]:
+                    wts_kw = [k.lower() for k in self.config.get("cleaning", {}).get("wts_keywords", ["wts"])]
+                    is_wts = any(k in line.message.lower() for k in wts_kw)
+                    tag = "ok" if is_wts else "dim"
+                    marker = "[WTS]" if is_wts else "     "
+                    self._calib_write(
+                        f"  {marker} {line.day} {line.timestamp}  <{line.player}> ({line.server})", tag
+                    )
+                    self._calib_write(f"          {line.message[:80]}", "dim")
+
+                if len(result.lines) > 5:
+                    self._calib_write(f"  … and {len(result.lines)-5} more lines.", "dim")
+            else:
+                self._calib_write("  ⚠ No lines parsed. Check the format matches:", "warn")
+                self._calib_write("    [HH:MM:SS] <Player> (Server) message", "warn")
+                self._calib_write("", "")
+                self._calib_write("  If your logs use a different format, paste 5–10 real lines", "dim")
+                self._calib_write("  and share them so the parser can be adjusted.", "dim")
+
+        except Exception as e:
+            tmp.unlink(missing_ok=True)
+            self._calib_write(f"Error: {e}", "warn")
 
     def _scan_corpus(self):
         path = self.txt_path.get().strip()
