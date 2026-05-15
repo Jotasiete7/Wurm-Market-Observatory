@@ -1,31 +1,32 @@
 {
   "active": {
-    "filename": "WurmArchive_SFI_2024-11_Restored_Cov71.txt",
+    "filename": "test_sample.txt",
     "server": "SFI",
     "period": "Nov 2024",
     "period_start": "2024-11-01",
-    "period_end": "2024-11-30",
-    "coverage": 0.71,
-    "log_lines": 147382,
+    "period_end": "2024-11-23",
+    "coverage": 0.5217,
+    "log_lines": 147,
     "gaps": [
-      { "start": "2024-11-06", "end": "2024-11-08", "label": "Nov 6–8" },
-      { "start": "2024-11-14", "end": "2024-11-16", "label": "Nov 14–16" },
-      { "start": "2024-11-24", "end": "2024-11-30", "label": "Nov 24–30" }
+      {
+        "start": "2024-11-07",
+        "end": "2024-11-08",
+        "label": "Nov 7–8"
+      },
+      {
+        "start": "2024-11-11",
+        "end": "2024-11-19",
+        "label": "Nov 11–19"
+      }
     ],
-    "generated_at": "2025-01-08",
-    "pipeline_version": "1.3.2"
+    "generated_at": "2026-05-15",
+    "pipeline_version": "1.0.0"
   },
   "all_corpora": [
-    { "month": "Jan 2024", "coverage": 0.0,  "server": "SFI" },
-    { "month": "Feb 2024", "coverage": 0.0,  "server": "SFI" },
-    { "month": "Mar 2024", "coverage": 0.0,  "server": "SFI" },
-    { "month": "Apr 2024", "coverage": 0.28, "server": "SFI" },
-    { "month": "May 2024", "coverage": 0.61, "server": "SFI" },
-    { "month": "Jun 2024", "coverage": 0.44, "server": "SFI" },
-    { "month": "Jul 2024", "coverage": 0.80, "server": "SFI" },
-    { "month": "Aug 2024", "coverage": 0.55, "server": "SFI" },
-    { "month": "Sep 2024", "coverage": 0.90, "server": "SFI" },
-    { "month": "Oct 2024", "coverage": 0.66, "server": "SFI" },
-    { "month": "Nov 2024", "coverage": 0.71, "server": "SFI" }
+    {
+      "month": "Nov 2024",
+      "coverage": 0.4,
+      "server": "SFI"
+    }
   ]
 }
