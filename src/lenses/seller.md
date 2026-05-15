@@ -9,19 +9,21 @@ import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
 import { t, LanguageSelector, ServerSelector, lang, server } from "../components/i18n.js";
 
+// BLOCO 1: Carregamento estático (roda uma vez)
 const nfi_meta = await FileAttachment("../data/nfi-corpus-meta.json").json();
 const sfi_meta = await FileAttachment("../data/sfi-corpus-meta.json").json();
 const nfi_data = await FileAttachment("../data/nfi-seller-activity.json").json();
 const sfi_data = await FileAttachment("../data/sfi-seller-activity.json").json();
+```
 
+```js
+// BLOCO 2: Seleção reativa (re-executa quando server ou lang mudam)
 const meta     = server.value === "NFI" ? nfi_meta : sfi_meta;
 const data     = server.value === "NFI" ? nfi_data : sfi_data;
 const corpus   = meta.active;
 const maxCount = data.top_sellers[0] ? data.top_sellers[0].count : 1;
-
 const observed = data.daily_activity.filter(function(row) { return !row.is_gap; });
 const gaps_arr = data.daily_activity.filter(function(row) { return row.is_gap; });
-
 const serverName = server.value || "NFI";
 const langVal    = lang.value || "pt";
 ```
@@ -73,7 +75,6 @@ display(html`<div class="obs-page">
 ```
 
 ```js
-// Gráfico de atividade diária
 display(html`<div class="obs-page" style="padding-top:0">
 <div class="chart-wrap" style="margin-bottom:1.25rem">
   <div class="chart-header">
@@ -100,7 +101,6 @@ display(html`<div class="obs-page" style="padding-top:0">
 ```
 
 ```js
-// Gráfico de categorias + ranking de vendedores
 display(html`<div class="obs-page" style="padding-top:0">
 <div class="obs-grid-2" style="margin-bottom:1.25rem; gap:1rem">
   <div class="chart-wrap">
@@ -136,7 +136,6 @@ display(html`<div class="obs-page" style="padding-top:0">
 ```
 
 ```js
-// Card de corpus de origem
 display(html`<div class="obs-page" style="padding-top:0">
 <div class="obs-section">
   <div class="obs-label">${t("source_corpus")}</div>

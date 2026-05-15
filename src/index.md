@@ -10,13 +10,17 @@ import { CoverageTimeline }  from "./components/coverage-timeline.js";
 import { LensCard }          from "./components/lens-card.js";
 import { t, LanguageSelector, ServerSelector, lang, server } from "./components/i18n.js";
 
+// BLOCO 1: Carregamento estático (roda uma vez)
 const nfi_meta   = await FileAttachment("data/nfi-corpus-meta.json").json();
 const sfi_meta   = await FileAttachment("data/sfi-corpus-meta.json").json();
 const nfi_seller = await FileAttachment("data/nfi-seller-activity.json").json();
 const sfi_seller = await FileAttachment("data/sfi-seller-activity.json").json();
 const nfi_buyer  = await FileAttachment("data/nfi-buyer-activity.json").json();
 const sfi_buyer  = await FileAttachment("data/sfi-buyer-activity.json").json();
+```
 
+```js
+// BLOCO 2: Seleção reativa (re-executa quando server muda)
 const meta   = server.value === "NFI" ? nfi_meta   : sfi_meta;
 const corpus = meta.active;
 const seller = server.value === "NFI" ? nfi_seller : sfi_seller;
