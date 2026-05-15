@@ -527,3 +527,17 @@ p  { line-height: 1.75; color: var(--ink-2); }
   text-transform: uppercase !important;
   font-family: var(--font-mono) !important;
 }
+
+/* INPUT NATIVO ESTILIZADO */
+.observablehq--block label { display: none !important; }
+.observablehq--block select {
+  background: var(--card) !important;
+  color: var(--amber) !important;
+  border: 0.5px solid var(--border) !important;
+  border-radius: 3px !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.7rem !important;
+  padding: 3px 8px !important;
+  cursor: pointer !important;
+  outline: none !important;
+}

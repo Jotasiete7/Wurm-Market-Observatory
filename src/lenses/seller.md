@@ -7,9 +7,9 @@ toc: false
 import * as Plot from "npm:@observablehq/plot";
 import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
-import { t, LanguageSelector, ServerSelector, lang, server } from "../components/i18n.js";
+import { t, LanguageSelector, lang } from "../components/i18n.js";
 
-// BLOCO 1: Carregamento estático (roda uma vez)
+// Carregamento estático (roda uma vez)
 const nfi_meta = await FileAttachment("../data/nfi-corpus-meta.json").json();
 const sfi_meta = await FileAttachment("../data/sfi-corpus-meta.json").json();
 const nfi_data = await FileAttachment("../data/nfi-seller-activity.json").json();
@@ -17,15 +17,20 @@ const sfi_data = await FileAttachment("../data/sfi-seller-activity.json").json()
 ```
 
 ```js
-// BLOCO 2: Seleção reativa (re-executa quando server ou lang mudam)
-const meta     = server.value === "NFI" ? nfi_meta : sfi_meta;
-const data     = server.value === "NFI" ? nfi_data : sfi_data;
+// Seletor nativo reativo do Observable (garantido)
+const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
+const serverVal  = Generators.input(serverView);
+```
+
+```js
+// Bloco reativo — re-executa quando serverVal ou lang mudam
+const meta     = serverVal === "NFI" ? nfi_meta : sfi_meta;
+const data     = serverVal === "NFI" ? nfi_data : sfi_data;
 const corpus   = meta.active;
 const maxCount = data.top_sellers[0] ? data.top_sellers[0].count : 1;
-const observed = data.daily_activity.filter(function(row) { return !row.is_gap; });
-const gaps_arr = data.daily_activity.filter(function(row) { return row.is_gap; });
-const serverName = server.value || "NFI";
-const langVal    = lang.value || "pt";
+const observed = data.daily_activity.filter(d => !d.is_gap);
+const gaps_arr = data.daily_activity.filter(d =>  d.is_gap);
+const langVal  = lang.value || "pt";
 ```
 
 ```js
@@ -39,12 +44,12 @@ display(html`<div class="obs-page">
       <span style="font-size:0.7rem;color:var(--ink-4);letter-spacing:0.5px">${t("lens_v")}</span>
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
-      ${ServerSelector()}
+      ${serverView}
       ${LanguageSelector()}
     </div>
   </div>
   <h1 class="obs-hero-title">${t("seller_title")}</h1>
-  <p class="obs-hero-sub">${langVal === "pt" ? "Quem vende e o que vendem no corpus de " + serverName : "Who sells and what they sell on " + serverName}</p>
+  <p class="obs-hero-sub">${langVal === "pt" ? "Quem vende e o que vendem no corpus de " + serverVal : "Who sells and what they sell on " + serverVal}</p>
 </div>
 
 <div class="method-note" style="margin-bottom:1.5rem">
@@ -78,19 +83,16 @@ display(html`<div class="obs-page">
 display(html`<div class="obs-page" style="padding-top:0">
 <div class="chart-wrap" style="margin-bottom:1.25rem">
   <div class="chart-header">
-    <div class="obs-label" style="margin-bottom:0">${t("daily_activity")} — ${corpus.period} (${serverName})</div>
+    <div class="obs-label" style="margin-bottom:0">${t("daily_activity")} — ${corpus.period} (${serverVal})</div>
     <span class="cov-badge warn">⚠ ${Math.round(data.coverage * 100)}% coverage</span>
   </div>
   ${Plot.plot({
-    width: 740,
-    height: 180,
-    marginLeft: 40,
-    marginRight: 10,
+    width: 740, height: 180, marginLeft: 40, marginRight: 10,
     style: { fontFamily: "var(--font-mono)", fontSize: 10, background: "transparent", color: "var(--ink-3)" },
     x: { label: null, ticks: 10 },
     y: { label: null, grid: true },
     marks: [
-      Plot.barY(gaps_arr, { x: "date", y2: 300, fill: "var(--gap)", opacity: 0.5 }),
+      Plot.barY(gaps_arr,  { x: "date", y2: 300, fill: "var(--gap)", opacity: 0.5 }),
       Plot.areaY(observed, { x: "date", y: "count", fill: "var(--amber)", fillOpacity: 0.15 }),
       Plot.lineY(observed, { x: "date", y: "count", stroke: "var(--amber)", strokeWidth: 1.5 }),
       Plot.ruleY([0], { stroke: "var(--border)" })
@@ -106,9 +108,7 @@ display(html`<div class="obs-page" style="padding-top:0">
   <div class="chart-wrap">
     <div class="obs-label">${langVal === "pt" ? "Volume por Categoria" : "Listings by Category"}</div>
     ${Plot.plot({
-      width: 320,
-      height: 220,
-      marginLeft: 82,
+      width: 320, height: 220, marginLeft: 82,
       style: { fontFamily: "var(--font-mono)", fontSize: 10, background: "transparent", color: "var(--ink-3)" },
       marks: [
         Plot.barX(data.by_category, { x: "count", y: "category", fill: "var(--amber)", sort: { y: "-x" } }),
@@ -118,18 +118,14 @@ display(html`<div class="obs-page" style="padding-top:0">
   </div>
   <div class="chart-wrap">
     <div class="obs-label" style="margin-bottom:0.75rem">${langVal === "pt" ? "Top Vendedores" : "Top Sellers"}</div>
-    ${html`<div>
-      ${data.top_sellers.slice(0, 12).map(function(s, i) {
-        return html`<div class="rank-row">
-          <span class="rank-n">${i + 1}</span>
-          <span class="rank-name">${s.name}</span>
-          <div class="rank-bar-cell">
-            <div class="rank-bar" style="width:${Math.round(s.count / maxCount * 100)}px"></div>
-            <span class="rank-count">${s.count}</span>
-          </div>
-        </div>`;
-      })}
-    </div>`}
+    ${html`<div>${data.top_sellers.slice(0,12).map((s,i) => html`<div class="rank-row">
+      <span class="rank-n">${i+1}</span>
+      <span class="rank-name">${s.name}</span>
+      <div class="rank-bar-cell">
+        <div class="rank-bar" style="width:${Math.round(s.count/maxCount*100)}px"></div>
+        <span class="rank-count">${s.count}</span>
+      </div>
+    </div>`)}</div>`}
   </div>
 </div>
 </div>`);

@@ -7,9 +7,9 @@ toc: false
 import * as Plot from "npm:@observablehq/plot";
 import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
-import { t, LanguageSelector, ServerSelector, lang, server } from "../components/i18n.js";
+import { t, LanguageSelector, lang } from "../components/i18n.js";
 
-// BLOCO 1: Carregamento estático (roda uma vez)
+// Carregamento estático (roda uma vez)
 const nfi_meta = await FileAttachment("../data/nfi-corpus-meta.json").json();
 const sfi_meta = await FileAttachment("../data/sfi-corpus-meta.json").json();
 const nfi_data = await FileAttachment("../data/nfi-buyer-activity.json").json();
@@ -17,13 +17,18 @@ const sfi_data = await FileAttachment("../data/sfi-buyer-activity.json").json();
 ```
 
 ```js
-// BLOCO 2: Seleção reativa (re-executa quando server ou lang mudam)
-const meta     = server.value === "NFI" ? nfi_meta : sfi_meta;
-const data     = server.value === "NFI" ? nfi_data : sfi_data;
+// Seletor nativo reativo
+const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
+const serverVal  = Generators.input(serverView);
+```
+
+```js
+// Bloco reativo
+const meta     = serverVal === "NFI" ? nfi_meta : sfi_meta;
+const data     = serverVal === "NFI" ? nfi_data : sfi_data;
 const corpus   = meta.active;
 const maxCount = data.top_buyers[0] ? data.top_buyers[0].count : 1;
-const serverName = server.value || "NFI";
-const langVal    = lang.value || "pt";
+const langVal  = lang.value || "pt";
 ```
 
 ```js
@@ -37,12 +42,12 @@ display(html`<div class="obs-page">
       <span style="font-size:0.7rem;color:var(--ink-4);letter-spacing:0.5px">${t("lens_v")}</span>
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
-      ${ServerSelector()}
+      ${serverView}
       ${LanguageSelector()}
     </div>
   </div>
   <h1 class="obs-hero-title">${t("buyer_title")}</h1>
-  <p class="obs-hero-sub">${langVal === "pt" ? "Sinais de compra (WTB) detectados no corpus de " + serverName : "Buy signals (WTB) detected on " + serverName}</p>
+  <p class="obs-hero-sub">${langVal === "pt" ? "Sinais de compra (WTB) no corpus de " + serverVal : "Buy signals (WTB) on " + serverVal}</p>
 </div>
 
 <div class="method-note" style="margin-bottom:1.5rem">
@@ -78,9 +83,7 @@ display(html`<div class="obs-page" style="padding-top:0">
   <div class="chart-wrap">
     <div class="obs-label">${langVal === "pt" ? "Demanda por Categoria" : "Demand by Category"}</div>
     ${Plot.plot({
-      width: 320,
-      height: 220,
-      marginLeft: 82,
+      width: 320, height: 220, marginLeft: 82,
       style: { fontFamily: "var(--font-mono)", fontSize: 10, background: "transparent", color: "var(--ink-3)" },
       marks: [
         Plot.barX(data.by_category, { x: "count", y: "category", fill: "#c47a3a", sort: { y: "-x" } }),
@@ -90,18 +93,14 @@ display(html`<div class="obs-page" style="padding-top:0">
   </div>
   <div class="chart-wrap">
     <div class="obs-label" style="margin-bottom:0.75rem">${t("rank")} / ${t("mentions")}</div>
-    ${html`<div>
-      ${data.top_buyers.slice(0, 12).map(function(s, i) {
-        return html`<div class="rank-row">
-          <span class="rank-n">${i + 1}</span>
-          <span class="rank-name">${s.name}</span>
-          <div class="rank-bar-cell">
-            <div class="rank-bar" style="background:#c47a3a; width:${Math.round(s.count / maxCount * 100)}px"></div>
-            <span class="rank-count">${s.count}</span>
-          </div>
-        </div>`;
-      })}
-    </div>`}
+    ${html`<div>${data.top_buyers.slice(0,12).map((s,i) => html`<div class="rank-row">
+      <span class="rank-n">${i+1}</span>
+      <span class="rank-name">${s.name}</span>
+      <div class="rank-bar-cell">
+        <div class="rank-bar" style="background:#c47a3a; width:${Math.round(s.count/maxCount*100)}px"></div>
+        <span class="rank-count">${s.count}</span>
+      </div>
+    </div>`)}</div>`}
   </div>
 </div>
 </div>`);
