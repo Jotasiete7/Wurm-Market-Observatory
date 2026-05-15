@@ -1,258 +1,71 @@
 {
   "lens": "seller_activity",
-  "corpus": "test_sample.txt",
-  "coverage": 0.5217,
+  "corpus": "test_calib.txt",
+  "coverage": 1.0,
   "generated_at": "2026-05-15",
-  "confidence": "partial",
-  "gaps": [
-    "2024-11-07/2024-11-08",
-    "2024-11-11/2024-11-19"
-  ],
+  "confidence": "high",
+  "gaps": [],
   "summary": {
-    "unique_sellers": 10,
-    "total_listings": 147,
-    "top_category": "Armor",
-    "top_category_pct": 0.3537,
-    "peak_day": "Thursday",
-    "peak_day_multiplier": 1.2
+    "unique_sellers": 3,
+    "total_listings": 42,
+    "top_category": "Other",
+    "top_category_pct": 0.619,
+    "peak_day": "Wednesday",
+    "peak_day_multiplier": 1.0
   },
   "daily_activity": [
     {
       "day": 1,
-      "date": "2024-11-01",
-      "count": 19,
-      "gap": false
-    },
-    {
-      "day": 2,
-      "date": "2024-11-02",
-      "count": 20,
-      "gap": false
-    },
-    {
-      "day": 3,
-      "date": "2024-11-03",
-      "count": 10,
-      "gap": false
-    },
-    {
-      "day": 4,
-      "date": "2024-11-04",
-      "count": 14,
-      "gap": false
-    },
-    {
-      "day": 5,
-      "date": "2024-11-05",
-      "count": 9,
-      "gap": false
-    },
-    {
-      "day": 6,
-      "date": "2024-11-06",
-      "count": 2,
-      "gap": false
-    },
-    {
-      "day": 7,
-      "date": "2024-11-07",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 8,
-      "date": "2024-11-08",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 9,
-      "date": "2024-11-09",
-      "count": 11,
-      "gap": false
-    },
-    {
-      "day": 10,
-      "date": "2024-11-10",
-      "count": 10,
-      "gap": false
-    },
-    {
-      "day": 11,
-      "date": "2024-11-11",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 12,
-      "date": "2024-11-12",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 13,
-      "date": "2024-11-13",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 14,
-      "date": "2024-11-14",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 15,
-      "date": "2024-11-15",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 16,
-      "date": "2024-11-16",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 17,
-      "date": "2024-11-17",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 18,
-      "date": "2024-11-18",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 19,
-      "date": "2024-11-19",
-      "count": null,
-      "gap": true
-    },
-    {
-      "day": 20,
-      "date": "2024-11-20",
-      "count": 23,
-      "gap": false
-    },
-    {
-      "day": 21,
-      "date": "2024-11-21",
-      "count": 16,
-      "gap": false
-    },
-    {
-      "day": 22,
-      "date": "2024-11-22",
-      "count": 7,
-      "gap": false
-    },
-    {
-      "day": 23,
-      "date": "2024-11-23",
-      "count": 6,
+      "date": "2025-01-01",
+      "count": 42,
       "gap": false
     }
   ],
   "top_sellers": [
     {
-      "name": "Valdris",
-      "count": 24,
+      "name": "Nerala",
+      "count": 3,
       "coverage": 1.0,
-      "top_item": "Sword"
+      "top_item": "Helm"
     },
     {
-      "name": "IronMere",
-      "count": 20,
+      "name": "Tynk",
+      "count": 3,
       "coverage": 1.0,
-      "top_item": "Plate"
+      "top_item": "Wood"
     },
     {
-      "name": "ThornSell",
-      "count": 17,
-      "coverage": 0.9167,
-      "top_item": "Gem"
-    },
-    {
-      "name": "GreyForge",
-      "count": 17,
-      "coverage": 0.9167,
-      "top_item": "Shield"
-    },
-    {
-      "name": "Quelindra",
-      "count": 16,
-      "coverage": 0.9167,
-      "top_item": "File"
-    },
-    {
-      "name": "NorthMark",
-      "count": 14,
-      "coverage": 0.8333,
-      "top_item": "Meal"
-    },
-    {
-      "name": "Paliveth",
-      "count": 13,
-      "coverage": 0.8333,
-      "top_item": "Leather"
-    },
-    {
-      "name": "Serevyn",
-      "count": 9,
-      "coverage": 0.6667,
+      "name": "Maryannjane",
+      "count": 3,
+      "coverage": 1.0,
       "top_item": "Unknown"
-    },
-    {
-      "name": "Duravel",
-      "count": 9,
-      "coverage": 0.6667,
-      "top_item": "Cotton"
-    },
-    {
-      "name": "Valthorn",
-      "count": 8,
-      "coverage": 0.6667,
-      "top_item": "Log"
     }
   ],
   "by_category": [
     {
-      "category": "Armor",
-      "count": 52,
-      "pct": 0.3537
-    },
-    {
-      "category": "Weapons",
-      "count": 24,
-      "pct": 0.1633
-    },
-    {
-      "category": "Tools",
-      "count": 16,
-      "pct": 0.1088
-    },
-    {
-      "category": "Magic",
-      "count": 15,
-      "pct": 0.102
-    },
-    {
-      "category": "Food",
-      "count": 14,
-      "pct": 0.0952
-    },
-    {
       "category": "Other",
-      "count": 13,
-      "pct": 0.0884
+      "count": 26,
+      "pct": 0.619
     },
     {
       "category": "Materials",
-      "count": 13,
-      "pct": 0.0884
+      "count": 11,
+      "pct": 0.2619
+    },
+    {
+      "category": "Armor",
+      "count": 3,
+      "pct": 0.0714
+    },
+    {
+      "category": "Weapons",
+      "count": 1,
+      "pct": 0.0238
+    },
+    {
+      "category": "Vehicles",
+      "count": 1,
+      "pct": 0.0238
     }
   ]
 }

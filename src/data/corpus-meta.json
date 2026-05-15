@@ -1,31 +1,20 @@
 {
   "active": {
-    "filename": "test_sample.txt",
+    "filename": "test_calib.txt",
     "server": "SFI",
-    "period": "Nov 2024",
-    "period_start": "2024-11-01",
-    "period_end": "2024-11-23",
-    "coverage": 0.5217,
-    "log_lines": 147,
-    "gaps": [
-      {
-        "start": "2024-11-07",
-        "end": "2024-11-08",
-        "label": "Nov 7–8"
-      },
-      {
-        "start": "2024-11-11",
-        "end": "2024-11-19",
-        "label": "Nov 11–19"
-      }
-    ],
+    "period": "Jan 2025",
+    "period_start": "2025-01-01",
+    "period_end": "2025-01-01",
+    "coverage": 1.0,
+    "log_lines": 119,
+    "gaps": [],
     "generated_at": "2026-05-15",
     "pipeline_version": "1.0.0"
   },
   "all_corpora": [
     {
-      "month": "Nov 2024",
-      "coverage": 0.4,
+      "month": "Jan 2025",
+      "coverage": 0.0323,
       "server": "SFI"
     }
   ]
