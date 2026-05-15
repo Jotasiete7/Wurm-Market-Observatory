@@ -1,6 +1,4 @@
-import { defineConfig } from "@observablehq/framework";
-
-export default defineConfig({
+export default {
   title: "Wurm Market Observatory",
   pages: [
     { name: "Observatory", path: "/" },
@@ -10,4 +8,4 @@ export default defineConfig({
   ],
   footer: "Wurm Market Observatory — derived data. Not canonical. Source: Historical Archive.",
   style: "style/observatory.css",
-});
+};
