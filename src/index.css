@@ -1,0 +1,45 @@
+:root {
+  --amber: #d4a259;
+  --ink: #e0d7c6;
+  --bg: #1a1814;
+  --bg-card: #24211c;
+  --border: #3d3830;
+  --font-title: 'Source Serif 4', serif;
+  --font-mono: 'JetBrains Mono', monospace;
+}
+
+body {
+  background-color: var(--bg) !important;
+  color: var(--ink) !important;
+  font-family: var(--font-mono);
+  margin: 0;
+}
+
+.obs-page {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 2rem;
+}
+
+.obs-hero-title {
+  font-family: var(--font-title);
+  font-size: 2.2rem;
+  color: var(--amber);
+}
+
+.obs-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  padding: 1rem;
+  margin-bottom: 1rem;
+}
+
+.stat-card-val {
+  font-size: 1.5rem;
+  color: var(--amber);
+}
+
+.obs-text {
+  font-size: 0.9rem;
+  line-height: 1.6;
+}
