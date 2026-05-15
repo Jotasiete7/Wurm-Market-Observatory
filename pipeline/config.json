@@ -1,0 +1,43 @@
+{
+  "_comment": "Corpus Workbench — configuration file. Edit freely.",
+
+  "output_dir": "../src/data",
+
+  "observatory": {
+    "server": "SFI",
+    "pipeline_version": "1.0.0"
+  },
+
+  "cleaning": {
+    "filter_system_messages": true,
+    "min_message_length": 5,
+    "remove_duplicate_lines": true,
+    "wts_keywords": ["wts", "selling", "for sale", "vendo", "fs", "sold"],
+    "wtb_keywords": ["wtb", "buying", "looking for", "compro", "lb", "want to buy"]
+  },
+
+  "categories": {
+    "Weapons":   ["sword", "axe", "mace", "spear", "bow", "longsword", "shortsword", "sickle", "scythe", "maul", "club"],
+    "Armor":     ["plate", "chain", "leather", "helm", "helmet", "shield", "gauntlet", "boot", "greave", "vambrace", "jacket"],
+    "Tools":     ["hammer", "saw", "file", "awl", "needle", "trowel", "pickaxe", "shovel", "rake", "rope tool", "grindstone", "whetstone"],
+    "Food":      ["meal", "bread", "meat", "stew", "nutrition", "pizza", "casserole", "soup", "cheese", "sausage"],
+    "Materials": ["wood", "iron", "cotton", "wool", "stone", "slate", "marble", "clay", "log", "plank", "lumber", "ore", "ingot"],
+    "Magic":     ["rune", "gem", "scroll", "wand", "sceptre", "totem", "statuette", "saccharine"],
+    "Vehicles":  ["boat", "ship", "cart", "wagon", "knarr", "corbita", "cog", "sailboat", "rowboat", "catamaran"],
+    "Animals":   ["horse", "bison", "bull", "cow", "chicken", "drake", "hell horse", "aged"],
+    "Housing":   ["deed", "house", "floor", "wall", "fence", "bridge", "column", "arch"]
+  },
+
+  "lenses": {
+    "seller_activity": {
+      "enabled": true,
+      "top_sellers_count": 10,
+      "min_mentions": 3
+    },
+    "buyer_activity": {
+      "enabled": false,
+      "top_buyers_count": 10,
+      "min_mentions": 3
+    }
+  }
+}
