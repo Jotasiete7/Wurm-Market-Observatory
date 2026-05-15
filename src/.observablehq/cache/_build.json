@@ -1,0 +1,1 @@
+{"title":"Wurm Market Observatory","config":{"root":"src"},"pages":[{"path":"/corpus","source":"/corpus.md","title":"Corpus Explorer"},{"path":"/","source":"/index.md","title":"Observatory"},{"path":"/methodology","source":"/methodology.md","title":"Methodology"},{"path":"/lenses/seller","source":"/lenses/seller.md","title":"Seller Activity Lens"}],"modules":[],"files":[]}
