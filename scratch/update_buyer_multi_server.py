@@ -1,4 +1,6 @@
----
+import sys
+
+content = r'''---
 title: Buyer Activity Lens
 toc: false
 ---
@@ -156,3 +158,8 @@ ${CorpusHealthCard(corpus)}
 </div>
 
 </div>
+'''
+
+with open('src/lenses/buyer.md', 'w', encoding='utf-8', newline='\r\n') as f:
+    f.write(content)
+print("buyer.md updated with Multi-Server support")

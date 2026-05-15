@@ -1,5 +1,7 @@
----
-title: Buyer Activity Lens
+import sys
+
+content = r'''---
+title: Seller Activity Lens
 toc: false
 ---
 
@@ -11,10 +13,10 @@ import { t, LanguageSelector, ServerSelector, lang, server } from "../components
 
 // Carregamento dinâmico baseado no servidor selecionado
 const meta = await FileAttachment(`../data/${server.value.toLowerCase()}-corpus-meta.json`).json();
-const data = await FileAttachment(`../data/${server.value.toLowerCase()}-buyer-activity.json`).json();
+const data = await FileAttachment(`../data/${server.value.toLowerCase()}-seller-activity.json`).json();
 const corpus = meta.active;
 
-const maxCount = data.top_buyers[0] ? data.top_buyers[0].count : 1;
+const maxCount = data.top_sellers[0] ? data.top_sellers[0].count : 1;
 ```
 
 <div class="obs-page">
@@ -31,11 +33,11 @@ const maxCount = data.top_buyers[0] ? data.top_buyers[0].count : 1;
   ${LanguageSelector()}
 </div>
 </div>
-<h1 style="font-family:var(--font-title);font-size:2rem;font-weight:400;margin-bottom:0.5rem">${t("buyer_title")}</h1>
+<h1 style="font-family:var(--font-title);font-size:2rem;font-weight:400;margin-bottom:0.5rem">${t("seller_title")}</h1>
 <p style="font-size:0.75rem;color:var(--ink-3);max-width:480px;line-height:1.7">
 ${lang.value === "pt" 
-  ? `Análise da demanda e sinais de compra (WTB) detectados no canal de trade de ${server.value}.`
-  : `Analysis of demand and buy signals (WTB) detected in the ${server.value} trade channel.`}
+  ? `Análise de quem vende, o que vendem e quando aparecem no corpus de ${server.value}.`
+  : `Analysis of who sells, what they sell, and when they appear in the ${server.value} corpus.`}
 </p>
 </div>
 
@@ -58,26 +60,52 @@ ${Math.round(data.coverage * 100)}%
 
 <div class="obs-grid-4" style="margin-bottom:1.5rem">
 <div class="stat-card">
-<div class="stat-card-label">${t("unique_buyers")}</div>
-<div class="stat-card-val">${data.summary.unique_buyers}</div>
+<div class="stat-card-label">${t("unique_sellers")}</div>
+<div class="stat-card-val">${data.summary.unique_sellers}</div>
 </div>
 <div class="stat-card">
-<div class="stat-card-label">${t("signals")}</div>
-<div class="stat-card-val">${data.summary.total_signals.toLocaleString()}</div>
+<div class="stat-card-label">${t("total_listings")}</div>
+<div class="stat-card-val">${data.summary.total_listings.toLocaleString()}</div>
 </div>
 <div class="stat-card">
 <div class="stat-card-label">${t("top_category")}</div>
 <div class="stat-card-val">${data.summary.top_category}</div>
 </div>
 <div class="stat-card">
-<div class="stat-card-label">${t("confidence")}</div>
-<div class="stat-card-val" style="font-size:0.8rem;text-transform:uppercase;color:var(--success)">${data.confidence}</div>
+<div class="stat-card-label">${t("peak_day")}</div>
+<div class="stat-card-val" style="font-size:0.8rem;text-transform:uppercase;color:var(--amber)">${data.summary.peak_day}</div>
+</div>
+</div>
+
+<div class="obs-section" style="margin-bottom:1.5rem">
+<div class="obs-label">${t("daily_activity")}</div>
+<div class="chart-wrap" style="height:120px">
+
+```js
+display(Plot.plot({
+  width: 680,
+  height: 80,
+  style: { fontFamily: "var(--font-mono)", fontSize: 9, background: "transparent", color: "var(--ink-4)" },
+  x: { type: "utc", label: null },
+  y: { label: null, grid: true, ticks: 3 },
+  marks: [
+    Plot.areaY(data.daily_activity, { x: "date", y: "count", fill: "var(--amber)", fillOpacity: 0.1 }),
+    Plot.lineY(data.daily_activity, { x: "date", y: "count", stroke: "var(--amber)", strokeWidth: 1 }),
+    Plot.ruleX(data.daily_activity.filter(d => d.is_gap), { x: "date", stroke: "var(--gap)", strokeWidth: 2 })
+  ]
+}));
+```
+
+</div>
+<div class="cov-legend" style="margin-top:0.5rem">
+  <div class="cov-legend-item"><div class="cov-swatch covered"></div><span>${t("observed")}</span></div>
+  <div class="cov-legend-item"><div class="cov-swatch gap"></div><span>${t("no_data")}</span></div>
 </div>
 </div>
 
 <div class="obs-grid-2" style="margin-bottom:1.25rem;gap:1rem">
 <div class="chart-wrap">
-<div class="obs-label">${lang.value === "pt" ? "Demanda por Categoria" : "Demand by Category"}</div>
+<div class="obs-label">${lang.value === "pt" ? "Volume por Categoria" : "Volume by Category"}</div>
 
 ```js
 display(Plot.plot({
@@ -86,7 +114,7 @@ display(Plot.plot({
   marginLeft: 82,
   style: { fontFamily: "var(--font-mono)", fontSize: 10, background: "transparent", color: "var(--ink-3)" },
   marks: [
-    Plot.barX(data.by_category, { x: "count", y: "category", fill: "#c47a3a", sort: { y: "-x" } }),
+    Plot.barX(data.by_category, { x: "count", y: "category", fill: "var(--amber)", sort: { y: "-x" } }),
     Plot.ruleX([0], { stroke: "var(--border)" })
   ]
 }));
@@ -98,12 +126,12 @@ display(Plot.plot({
 
 ```js
 display(html`<div>
-  ${data.top_buyers.map(function(s, i) { 
+  ${data.top_sellers.map(function(s, i) { 
     return html`<div class="rank-row">
       <span class="rank-n">${i + 1}</span>
       <span class="rank-name">${s.name}</span>
       <div class="rank-bar-cell">
-        <div class="rank-bar" style="background:#c47a3a; width:${Math.round(s.count / (maxCount || 1) * 100)}px"></div>
+        <div class="rank-bar" style="width:${Math.round(s.count / maxCount * 100)}px"></div>
         <span class="rank-count">${s.count}</span>
       </div>
     </div>`;
@@ -115,13 +143,13 @@ display(html`<div>
 </div>
 
 <div class="obs-section" style="margin-bottom:1.5rem">
-<div class="obs-label">${lang.value === "pt" ? "Demanda Semântica (Itens Procurados)" : "Semantic Demand (Wanted Items)"}</div>
+<div class="obs-label">${lang.value === "pt" ? "Itens Extraídos (Motor Semântico)" : "Extracted Items (Semantic Engine)"}</div>
 
 ```js
-const allItems = data.top_buyers.flatMap(function(s) { return s.parsed_items || []; });
+const allItems = data.top_sellers.flatMap(function(s) { return s.parsed_items || []; });
 const grouped = {};
 for (const item of allItems) {
-  if (!grouped[item.name]) grouped[item.name] = { count: 0, totalQty: 0 };
+  if (!grouped[item.name]) grouped[item.name] = { count: 0, totalQty: 0, avgPrice: 0 };
   grouped[item.name].count += 1;
   grouped[item.name].totalQty += item.qty;
 }
@@ -139,7 +167,7 @@ display(html`
   </div>
   ${itemsSummary.map(function(d) { return html`
     <div style="display:flex; padding:4px 0; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-2); border-bottom:1px dotted var(--border-light);">
-      <div style="flex:2; color:#c47a3a;">${d.name}</div>
+      <div style="flex:2; color:var(--amber);">${d.name}</div>
       <div style="flex:1;text-align:right">${d.count}</div>
       <div style="flex:1;text-align:right">${d.totalQty}</div>
     </div>`;
@@ -156,3 +184,8 @@ ${CorpusHealthCard(corpus)}
 </div>
 
 </div>
+'''
+
+with open('src/lenses/seller.md', 'w', encoding='utf-8', newline='\r\n') as f:
+    f.write(content)
+print("seller.md updated with Multi-Server support")
