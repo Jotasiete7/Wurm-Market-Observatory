@@ -1,6 +1,7 @@
 {
   "name": "wurm-observatory",
   "version": "1.0.0",
+  "description": "An archaeological record of Wurm Online's economy using Observable Framework.",
   "private": true,
   "type": "module",
   "scripts": {
@@ -10,5 +11,17 @@
   },
   "dependencies": {
     "@observablehq/framework": "^1.13.0"
-  }
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Jotasiete7/Wurm-Market-Observatory.git"
+  },
+  "keywords": [
+    "wurm-online",
+    "data-visualization",
+    "observable-framework",
+    "archaeology"
+  ],
+  "author": "Jotasiete7",
+  "license": "MIT"
 }
