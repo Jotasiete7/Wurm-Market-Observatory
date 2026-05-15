@@ -8,9 +8,9 @@ import { html } from "npm:htl";
 import { CorpusHealthCard } from "./components/corpus-health.js";
 import { CoverageTimeline }  from "./components/coverage-timeline.js";
 import { LensCard }          from "./components/lens-card.js";
-import { t, LanguageSelector, ServerSelector, lang, server } from "./components/i18n.js";
+import { t, LanguageSelector, lang } from "./components/i18n.js";
 
-// BLOCO 1: Carregamento estático (roda uma vez)
+// BLOCO 1: Carregamento estático
 const nfi_meta   = await FileAttachment("data/nfi-corpus-meta.json").json();
 const sfi_meta   = await FileAttachment("data/sfi-corpus-meta.json").json();
 const nfi_seller = await FileAttachment("data/nfi-seller-activity.json").json();
@@ -20,11 +20,18 @@ const sfi_buyer  = await FileAttachment("data/sfi-buyer-activity.json").json();
 ```
 
 ```js
-// BLOCO 2: Seleção reativa (re-executa quando server muda)
-const meta   = server.value === "NFI" ? nfi_meta   : sfi_meta;
+// BLOCO 2: Seletor nativo reativo
+const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
+const serverVal  = Generators.input(serverView);
+```
+
+```js
+// BLOCO 3: Seleção reativa
+const meta   = serverVal === "NFI" ? nfi_meta   : sfi_meta;
 const corpus = meta.active;
-const seller = server.value === "NFI" ? nfi_seller : sfi_seller;
-const buyer  = server.value === "NFI" ? nfi_buyer  : sfi_buyer;
+const seller = serverVal === "NFI" ? nfi_seller : sfi_seller;
+const buyer  = serverVal === "NFI" ? nfi_buyer  : sfi_buyer;
+const langVal = lang.value || "pt";
 ```
 
 ```js
@@ -34,7 +41,7 @@ display(html`<div class="obs-page">
   <div style="display:flex; justify-content:space-between; align-items:flex-start;">
     <div class="obs-hero-eyebrow">Wurm Market Observatory</div>
     <div style="display:flex; gap:8px; align-items:center;">
-      ${ServerSelector()}
+      ${serverView}
       ${LanguageSelector()}
     </div>
   </div>
@@ -49,7 +56,7 @@ display(html`<div class="obs-page">
 </div>
 
 <div class="obs-section">
-  <div class="obs-label">${lang.value === "pt" ? "Cronologia Reconstruída" : "Reconstructed Chronology"}</div>
+  <div class="obs-label">${langVal === "pt" ? "Cronologia Reconstruída" : "Reconstructed Chronology"}</div>
   ${CoverageTimeline(meta.all_corpora)}
 </div>
 
@@ -60,14 +67,14 @@ display(html`<div class="obs-page">
       <div class="obs-dot"></div>
       <div>
         <div class="obs-text">${t("obs_surge", { cat: seller.summary.top_category, pct: Math.round(seller.summary.top_category_pct * 100) })}</div>
-        <div class="obs-meta">${lang.value === "pt" ? "atividade_vendedor" : "seller_activity"} · ${corpus.period} · ${Math.round(seller.coverage * 100)}% cov</div>
+        <div class="obs-meta">${langVal === "pt" ? "atividade_vendedor" : "seller_activity"} · ${corpus.period} · ${Math.round(seller.coverage * 100)}% cov</div>
       </div>
     </div>
     <div class="obs-item">
       <div class="obs-dot"></div>
       <div>
         <div class="obs-text">${t("obs_weekend")}</div>
-        <div class="obs-meta">${lang.value === "pt" ? "densidade_trade" : "trade_density"} · multi-corpus · partial</div>
+        <div class="obs-meta">${langVal === "pt" ? "densidade_trade" : "trade_density"} · multi-corpus · partial</div>
       </div>
     </div>
   </div>

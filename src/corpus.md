@@ -6,7 +6,19 @@ toc: false
 ```js
 import { html } from "npm:htl";
 import { t, LanguageSelector, lang } from "./components/i18n.js";
-const meta = await FileAttachment("data/nfi-corpus-meta.json").json();
+
+const nfi_meta = await FileAttachment("data/nfi-corpus-meta.json").json();
+const sfi_meta = await FileAttachment("data/sfi-corpus-meta.json").json();
+```
+
+```js
+const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
+const serverVal  = Generators.input(serverView);
+```
+
+```js
+const meta = serverVal === "NFI" ? nfi_meta : sfi_meta;
+const langVal = lang.value || "pt";
 ```
 
 ```js
@@ -14,19 +26,22 @@ display(html`<div class="obs-page">
 
 <div class="obs-hero">
   <div style="display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.5rem">
-    <div style="font-size:0.65rem; color:var(--amber); letter-spacing:2px; text-transform:uppercase">${t("explorer_title")}</div>
-    ${LanguageSelector()}
+    <div class="obs-hero-eyebrow">${t("explorer_title")}</div>
+    <div style="display:flex; gap:8px; align-items:center;">
+      ${serverView}
+      ${LanguageSelector()}
+    </div>
   </div>
-  <h1 class="obs-hero-title">${lang.value === "pt" ? "A matéria-prima" : "The raw material"}</h1>
+  <h1 class="obs-hero-title">${langVal === "pt" ? "A matéria-prima" : "The raw material"}</h1>
   <p class="obs-hero-sub">
-    ${lang.value === "pt"
+    ${langVal === "pt"
       ? "Cada análise neste observatório deriva de corpora restaurados do Arquivo Histórico. Esta página mostra o que foi carregado e o que está faltando."
       : "Every analysis in this observatory derives from restored corpora from the Historical Archive. This page shows what has been loaded and what is missing."}
   </p>
 </div>
 
 <div class="obs-section" style="margin-top:3rem">
-  <div class="obs-label">${lang.value === "pt" ? "Corpora Carregados" : "Loaded Corpora"}</div>
+  <div class="obs-label">${langVal === "pt" ? "Corpora Carregados (" + serverVal + ")" : "Loaded Corpora (" + serverVal + ")"}</div>
   <div style="display:flex; flex-direction:column; gap:8px; margin-top:1rem">
     ${meta.all_corpora.filter(c => c.coverage > 0).map(c => html`
       <div class="obs-card" style="display:flex; align-items:center; gap:1.5rem; padding:0.75rem 1rem">
@@ -41,15 +56,15 @@ display(html`<div class="obs-page">
 </div>
 
 <div class="obs-section" style="margin-top:3rem">
-  <div class="obs-label">${lang.value === "pt" ? "Períodos Ausentes" : "Missing Periods"}</div>
+  <div class="obs-label">${langVal === "pt" ? "Períodos Ausentes" : "Missing Periods"}</div>
   <div style="display:flex; flex-direction:column; gap:8px; margin-top:1rem">
     ${meta.all_corpora.filter(c => c.coverage === 0).length === 0
-      ? html`<p style="color:var(--ink-3); font-size:0.8rem">${lang.value === "pt" ? "Nenhum gap detectado." : "No gaps detected."}</p>`
+      ? html`<p style="color:var(--ink-3); font-size:0.8rem">${langVal === "pt" ? "Nenhum gap detectado." : "No gaps detected."}</p>`
       : meta.all_corpora.filter(c => c.coverage === 0).map(c => html`
         <div class="obs-card" style="display:flex; align-items:center; gap:1.5rem; padding:0.75rem 1rem; opacity:0.5">
           <div style="min-width:90px; font-size:0.75rem; color:var(--ink-3)">${c.month}</div>
-          <div style="flex:1; height:4px; background:repeating-linear-gradient(90deg, var(--gap) 0, var(--gap) 2px, transparent 2px, transparent 6px); border-radius:2px"></div>
-          <div style="font-size:0.7rem; color:var(--ink-4)">${lang.value === "pt" ? "sem dados" : "no data"}</div>
+          <div style="flex:1; height:4px; background:var(--hatch); border-radius:2px"></div>
+          <div style="font-size:0.7rem; color:var(--ink-4)">${langVal === "pt" ? "sem dados" : "no data"}</div>
         </div>
       `)
     }
@@ -57,10 +72,10 @@ display(html`<div class="obs-page">
 </div>
 
 <div class="obs-section" style="margin-top:3rem">
-  <div class="obs-card" style="border-left: 2px solid var(--amber)">
-    <strong style="font-size:0.8rem; color:var(--ink)">${lang.value === "pt" ? "O que é um corpus restaurado?" : "What is a restored corpus?"}</strong><br>
+  <div class="method-note">
+    <strong>${langVal === "pt" ? "O que é um corpus restaurado?" : "What is a restored corpus?"}</strong><br>
     <p style="font-size:0.8rem; color:var(--ink-2); line-height:1.7; margin-top:0.5rem">
-      ${lang.value === "pt"
+      ${langVal === "pt"
         ? "Corpora são logs do canal de trade extraídos do Arquivo Histórico. 'Restaurado' significa que o log foi limpo de artefatos e duplicatas. A cobertura reflete quantos dias têm pelo menos uma entrada válida."
         : "Corpora are trade channel logs from the Historical Archive. 'Restored' means the log has been cleaned of encoding artifacts and duplicates. Coverage reflects how many days have at least one valid log entry."}
     </p>
