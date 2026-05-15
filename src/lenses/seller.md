@@ -18,6 +18,8 @@ const meta   = server.value === "NFI" ? nfi_meta : sfi_meta;
 const data   = server.value === "NFI" ? nfi_data : sfi_data;
 const corpus = meta.active;
 const maxCount = data.top_sellers[0] ? data.top_sellers[0].count : 1;
+const serverName = server.value || "NFI";
+const langVal = lang.value || "pt";
 ```
 
 ```js
@@ -33,7 +35,7 @@ display(html`<div class="obs-page">
   </div>
   <div class="obs-hero-eyebrow">${t("lens_v")}</div>
   <h1 class="obs-hero-title">${t("seller_title")}</h1>
-  <p class="obs-hero-sub">${lang.value === "pt" ? "Quem vende e o que vendem no corpus de " + server.value : "Who sells and what they sell on " + server.value}</p>
+  <p class="obs-hero-sub">${langVal === "pt" ? "Quem vende e o que vendem no corpus de " + serverName : "Who sells and what they sell on " + serverName}</p>
 </div>
 
 <div class="method-note" style="margin-bottom:2rem">

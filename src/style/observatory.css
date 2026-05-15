@@ -500,3 +500,30 @@ p  { line-height: 1.75; color: var(--ink-2); }
   font-style: italic;
 }
 
+
+/* SIDEBAR DARK ARCHIVE */
+#observablehq-sidebar {
+  background: var(--parch-dark) !important;
+  border-right: 0.5px solid var(--border) !important;
+}
+#observablehq-sidebar a {
+  color: var(--ink-3) !important;
+  text-decoration: none !important;
+  font-family: var(--font-mono) !important;
+  font-size: 0.72rem !important;
+  font-weight: 400 !important;
+}
+#observablehq-sidebar a:hover {
+  color: var(--amber) !important;
+}
+.observablehq-link-active > a {
+  color: var(--amber) !important;
+  font-weight: 500 !important;
+}
+#observablehq-sidebar summary {
+  color: var(--ink-4) !important;
+  font-size: 0.6rem !important;
+  letter-spacing: 1.5px !important;
+  text-transform: uppercase !important;
+  font-family: var(--font-mono) !important;
+}

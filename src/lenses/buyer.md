@@ -17,6 +17,8 @@ const sfi_data = await FileAttachment("../data/sfi-buyer-activity.json").json();
 const meta   = server.value === "NFI" ? nfi_meta : sfi_meta;
 const data   = server.value === "NFI" ? nfi_data : sfi_data;
 const corpus = meta.active;
+const serverName = server.value || "NFI";
+const langVal = lang.value || "pt";
 ```
 
 ```js
@@ -32,7 +34,7 @@ display(html`<div class="obs-page">
   </div>
   <div class="obs-hero-eyebrow">${t("lens_v")}</div>
   <h1 class="obs-hero-title">${t("buyer_title")}</h1>
-  <p class="obs-hero-sub">${lang.value === "pt" ? "Sinais de compra detectados no corpus de " + server.value : "Buy signals detected on " + server.value}</p>
+  <p class="obs-hero-sub">${langVal === "pt" ? "Sinais de compra detectados no corpus de " + serverName : "Buy signals detected on " + serverName}</p>
 </div>
 
 <div class="method-note" style="margin-bottom:2rem">
