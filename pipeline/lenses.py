@@ -246,12 +246,18 @@ def process_buyer_lens(result: ParseResult, cov: CoverageResult, config: dict) -
 
 def _is_wts(message: str, keywords: list) -> bool:
     msg = message.lower()
-    return any(kw in msg for kw in keywords)
+    for kw in keywords:
+        if re.search(rf"\b{re.escape(kw.lower())}\b", msg):
+            return True
+    return False
 
 
 def _is_wtb(message: str, keywords: list) -> bool:
     msg = message.lower()
-    return any(kw in msg for kw in keywords)
+    for kw in keywords:
+        if re.search(rf"\b{re.escape(kw.lower())}\b", msg):
+            return True
+    return False
 
 
 def _categorize(message: str, categories: dict) -> str:

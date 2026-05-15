@@ -15,9 +15,9 @@
   ],
   "summary": {
     "unique_sellers": 1168,
-    "total_listings": 45301,
+    "total_listings": 45289,
     "top_category": "Other",
-    "top_category_pct": 0.3383,
+    "top_category_pct": 0.3382,
     "peak_day": "Sunday",
     "peak_day_multiplier": 1.1
   },
@@ -37,7 +37,7 @@
     {
       "day": 3,
       "date": "2025-01-03",
-      "count": 186,
+      "count": 185,
       "gap": false
     },
     {
@@ -271,7 +271,7 @@
     {
       "day": 42,
       "date": "2025-02-11",
-      "count": 92,
+      "count": 91,
       "gap": false
     },
     {
@@ -343,7 +343,7 @@
     {
       "day": 54,
       "date": "2025-02-23",
-      "count": 82,
+      "count": 81,
       "gap": false
     },
     {
@@ -721,7 +721,7 @@
     {
       "day": 117,
       "date": "2025-04-27",
-      "count": 75,
+      "count": 74,
       "gap": false
     },
     {
@@ -883,7 +883,7 @@
     {
       "day": 144,
       "date": "2025-05-24",
-      "count": 136,
+      "count": 135,
       "gap": false
     },
     {
@@ -1345,7 +1345,7 @@
     {
       "day": 221,
       "date": "2025-08-09",
-      "count": 128,
+      "count": 127,
       "gap": false
     },
     {
@@ -1513,13 +1513,13 @@
     {
       "day": 249,
       "date": "2025-09-06",
-      "count": 140,
+      "count": 139,
       "gap": false
     },
     {
       "day": 250,
       "date": "2025-09-07",
-      "count": 245,
+      "count": 243,
       "gap": false
     },
     {
@@ -1717,7 +1717,7 @@
     {
       "day": 283,
       "date": "2025-10-10",
-      "count": 185,
+      "count": 184,
       "gap": false
     },
     {
@@ -1753,7 +1753,7 @@
     {
       "day": 289,
       "date": "2025-10-16",
-      "count": 232,
+      "count": 231,
       "gap": false
     },
     {
@@ -2089,7 +2089,7 @@
     {
       "day": 345,
       "date": "2025-12-11",
-      "count": 168,
+      "count": 167,
       "gap": false
     },
     {
@@ -32630,7 +32630,7 @@
     },
     {
       "name": "Xerxzie",
-      "count": 430,
+      "count": 428,
       "coverage": 0.5735,
       "top_item": "Iron",
       "parsed_items": [
@@ -33949,29 +33949,11 @@
           "date": "2025-09-07"
         },
         {
-          "id": "wtb_empty_shelf_still_tables_and_chairs_fsb_bsu_lcu_bookshelves_or_empty",
-          "name": "Wtb Empty Shelf, Still, Tables And Chairs, Fsb, Bsu, Lcu, Bookshelves Or Empty",
-          "price": 0.0,
-          "qty": 1,
-          "ql": 50.0,
-          "rarity": "Rare",
-          "date": "2025-09-07"
-        },
-        {
           "id": "wts_blue_drake_hide_armor_set_5g_jacket_and_one_sleeve_are_rare_plate_armor_set_iron_4s_steel_6s",
           "name": "Wts Blue Drake Hide Armor Set.5G (Jacket And One Sleeve Are Rare), Plate Armor Set Iron 4S, Steel 6S",
           "price": 36000.0,
           "qty": 1,
           "ql": 95.0,
-          "rarity": "Rare",
-          "date": "2025-09-07"
-        },
-        {
-          "id": "wtb_empty_shelf_still_fireplace_smelter_fsb_bsu_lcu_bookshelves_tables_and_chairs",
-          "name": "Wtb Empty Shelf, Still, Fireplace, Smelter, Fsb, Bsu, Lcu, Bookshelves, Tables And Chairs",
-          "price": 0.0,
-          "qty": 1,
-          "ql": 50.0,
           "rarity": "Rare",
           "date": "2025-09-07"
         },
@@ -47802,13 +47784,13 @@
   "by_category": [
     {
       "category": "Other",
-      "count": 15327,
-      "pct": 0.3383
+      "count": 15317,
+      "pct": 0.3382
     },
     {
       "category": "Materials",
-      "count": 13809,
-      "pct": 0.3048
+      "count": 13808,
+      "pct": 0.3049
     },
     {
       "category": "Armor",
@@ -47833,12 +47815,12 @@
     {
       "category": "Vehicles",
       "count": 1053,
-      "pct": 0.0232
+      "pct": 0.0233
     },
     {
       "category": "Food",
-      "count": 859,
-      "pct": 0.019
+      "count": 858,
+      "pct": 0.0189
     },
     {
       "category": "Magic",
