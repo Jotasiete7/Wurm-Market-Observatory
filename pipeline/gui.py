@@ -194,11 +194,19 @@ class WorkbenchApp:
         self.status.set("Scanning corpus…")
 
         def run():
-            result   = core.parse_file(path, self.config)
-            coverage = core.compute_coverage(result)
-            self._parse_result = result
-            self._coverage     = coverage
-            self.root.after(0, lambda: self._update_corpus_info(result, coverage))
+            try:
+                result   = core.parse_file(path, self.config)
+                coverage = core.compute_coverage(result)
+                self._parse_result = result
+                self._coverage     = coverage
+                self.root.after(0, lambda: self._update_corpus_info(result, coverage))
+            except Exception as e:
+                import traceback
+                err = traceback.format_exc()
+                self.root.after(0, lambda: [
+                    self.status.set(f"Error: {e}"),
+                    messagebox.showerror("Scan Error", f"Unexpected error:\n\n{err}")
+                ])
 
         threading.Thread(target=run, daemon=True).start()
 

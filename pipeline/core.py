@@ -174,15 +174,6 @@ def compute_coverage(result: ParseResult) -> CoverageResult:
         runs.append((run_start, prev))
 
         for (gs, ge) in runs:
-            label = (f"{gs.strftime('%b %-d')}–{ge.strftime('%-d')}"
-                     if gs.month == ge.month
-                     else f"{gs.strftime('%b %-d')}–{ge.strftime('%b %-d')}")
-            # Windows strftime doesn't support %-d, use lstrip('0')
-            try:
-                label = label  # may fail on windows
-            except Exception:
-                label = f"{gs.isoformat()} – {ge.isoformat()}"
-
             cov.gaps.append({
                 "start": gs.isoformat(),
                 "end":   ge.isoformat(),
