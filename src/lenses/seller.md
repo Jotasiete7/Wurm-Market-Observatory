@@ -223,19 +223,32 @@ html`<div>
 
 ```js
 const allItems = data.top_sellers.flatMap(s => s.parsed_items || []);
-const itemsSummary = d3.rollups(allItems, 
-  v => ({
-    count: v.length,
-    totalQty: d3.sum(v, d => d.qty),
-    avgPrice: d3.mean(v, d => d.price > 0 ? d.price : NaN) || 0
-  }), 
-  d => d.name
-)
-.map(([name, stats]) => ({ name, ...stats }))
-.sort((a, b) => b.count - a.count)
-.slice(0, 10);
 
-html`
+// Group by name
+const grouped = {};
+for (const item of allItems) {
+  if (!grouped[item.name]) {
+    grouped[item.name] = { count: 0, totalQty: 0, sumPrice: 0, priceCount: 0 };
+  }
+  grouped[item.name].count += 1;
+  grouped[item.name].totalQty += item.qty;
+  if (item.price > 0) {
+    grouped[item.name].sumPrice += item.price;
+    grouped[item.name].priceCount += 1;
+  }
+}
+
+const itemsSummary = Object.entries(grouped)
+  .map(([name, stats]) => ({
+    name,
+    count: stats.count,
+    totalQty: stats.totalQty,
+    avgPrice: stats.priceCount > 0 ? stats.sumPrice / stats.priceCount : 0
+  }))
+  .sort((a, b) => b.count - a.count)
+  .slice(0, 10);
+
+display(html`
 <div style="background:var(--bg-card); border:1px solid var(--border); padding:1rem; border-radius:4px;">
   <div style="display:flex; border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:8px; font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-4);">
     <div style="flex:2">Item (Canonical Name)</div>
@@ -252,7 +265,7 @@ html`
     </div>
   `)}
 </div>
-`
+`);
 ```
   </div>
 
