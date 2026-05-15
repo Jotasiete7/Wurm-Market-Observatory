@@ -1,4 +1,6 @@
----
+import sys
+
+content = r'''---
 title: Corpus Explorer
 toc: false
 ---
@@ -75,3 +77,8 @@ display(html`<div style="display:flex;flex-direction:column;gap:8px">
   </div>
 
 </div>
+'''
+
+with open('src/corpus.md', 'w', encoding='utf-8', newline='\r\n') as f:
+    f.write(content)
+print("corpus.md updated with i18n support")

@@ -1,4 +1,5 @@
 import { html } from "npm:htl";
+import { t } from "./i18n.js";
 
 export function CorpusHealthCard(corpus) {
   const pct = Math.round(corpus.coverage * 100);
@@ -19,28 +20,28 @@ export function CorpusHealthCard(corpus) {
     <div class="corpus-health">
       <div class="corpus-health-header">
         <span class="corpus-name">${corpus.filename}</span>
-        <span class="corpus-generated">generated ${corpus.generated_at} · pipeline v${corpus.pipeline_version}</span>
+        <span class="corpus-generated">${t("generated")} ${corpus.generated_at} · pipeline v${corpus.pipeline_version}</span>
       </div>
 
       <div class="corpus-meta-row">
         <div>
-          <div class="corpus-stat-label">Coverage</div>
+          <div class="corpus-stat-label">${t("coverage")}</div>
           <div class="corpus-stat-val amber">${pct}%</div>
         </div>
         <div>
-          <div class="corpus-stat-label">Period</div>
+          <div class="corpus-stat-label">${t("period")}</div>
           <div class="corpus-stat-val">${corpus.period}</div>
         </div>
         <div>
-          <div class="corpus-stat-label">Server</div>
+          <div class="corpus-stat-label">${t("server")}</div>
           <div class="corpus-stat-val">${corpus.server}</div>
         </div>
         <div>
-          <div class="corpus-stat-label">Known gaps</div>
+          <div class="corpus-stat-label">${t("known_gaps")}</div>
           <div class="corpus-stat-val warn">${corpus.gaps.length} periods</div>
         </div>
         <div>
-          <div class="corpus-stat-label">Log lines</div>
+          <div class="corpus-stat-label">${t("log_lines")}</div>
           <div class="corpus-stat-val">${corpus.log_lines.toLocaleString()}</div>
         </div>
       </div>
@@ -59,11 +60,11 @@ export function CorpusHealthCard(corpus) {
         <div class="cov-legend">
           <div class="cov-legend-item">
             <div class="cov-swatch covered"></div>
-            <span>covered</span>
+            <span>${t("covered")}</span>
           </div>
           <div class="cov-legend-item">
             <div class="cov-swatch gap"></div>
-            <span>gap — unknown territory</span>
+            <span>${t("no_interpolation")}</span>
           </div>
           ${corpus.gaps.map(g => html`
             <div class="cov-legend-item" style="color:var(--amber)">

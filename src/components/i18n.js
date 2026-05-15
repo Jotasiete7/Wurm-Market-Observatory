@@ -28,7 +28,14 @@ const translations = {
     avg_price: "Preço Médio (C)",
     source_corpus: "Corpus de origem",
     known_gaps: "Gaps conhecidos:",
-    no_interpolation: "período de lacuna (não interpolado)"
+    no_interpolation: "período de lacuna (não interpolado)",
+    server: "Servidor",
+    log_lines: "Linhas de Log",
+    generated: "gerado em",
+    confidence: "Confiança",
+    signals: "Sinais de Demanda",
+    explorer_title: "Explorador de Corpus",
+    methodology_title: "Metodologia Arqueológica"
   },
   en: {
     back: "← Observatory",
@@ -54,7 +61,14 @@ const translations = {
     avg_price: "Avg Price (C)",
     source_corpus: "Source Corpus",
     known_gaps: "Known gaps:",
-    no_interpolation: "gap period (not interpolated)"
+    no_interpolation: "gap period (not interpolated)",
+    server: "Server",
+    log_lines: "Log Lines",
+    generated: "generated on",
+    confidence: "Confidence",
+    signals: "Demand Signals",
+    explorer_title: "Corpus Explorer",
+    methodology_title: "Archaeological Methodology"
   }
 };
 

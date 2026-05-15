@@ -1,4 +1,6 @@
----
+import sys
+
+content = r'''---
 title: Methodology
 toc: false
 ---
@@ -75,3 +77,8 @@ import { t, LanguageSelector, lang } from "./components/i18n.js";
   </div>
 
 </div>
+'''
+
+with open('src/methodology.md', 'w', encoding='utf-8', newline='\r\n') as f:
+    f.write(content)
+print("methodology.md updated with i18n support")
