@@ -14,34 +14,40 @@ const sfi_meta = await FileAttachment("../data/sfi-corpus-meta.json").json();
 const nfi_data = await FileAttachment("../data/nfi-buyer-activity.json").json();
 const sfi_data = await FileAttachment("../data/sfi-buyer-activity.json").json();
 
-const meta   = server.value === "NFI" ? nfi_meta : sfi_meta;
-const data   = server.value === "NFI" ? nfi_data : sfi_data;
-const corpus = meta.active;
+const meta     = server.value === "NFI" ? nfi_meta : sfi_meta;
+const data     = server.value === "NFI" ? nfi_data : sfi_data;
+const corpus   = meta.active;
+const maxCount = data.top_buyers[0] ? data.top_buyers[0].count : 1;
+
 const serverName = server.value || "NFI";
-const langVal = lang.value || "pt";
+const langVal    = lang.value || "pt";
 ```
 
 ```js
 display(html`<div class="obs-page">
 
-<div style="padding: 2rem 0; border-bottom: 0.5px solid var(--border); margin-bottom: 2rem;">
-  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
-    <a href="/" style="font-size:0.65rem; color:var(--amber); text-decoration:none; text-transform:uppercase; letter-spacing:1px">${t("back")}</a>
+<div style="padding: 2rem 0 1.5rem; border-bottom: 0.5px solid var(--border); margin-bottom: 2rem;">
+  <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:0.5rem">
+    <div>
+      <a href="/" style="font-size:0.7rem;color:var(--amber);text-decoration:none;letter-spacing:0.5px">${t("back")}</a>
+      <span style="font-size:0.7rem;color:var(--ink-4);margin:0 0.5rem">/</span>
+      <span style="font-size:0.7rem;color:var(--ink-4);letter-spacing:0.5px">${t("lens_v")}</span>
+    </div>
     <div style="display:flex; gap:8px; align-items:center;">
       ${ServerSelector()}
       ${LanguageSelector()}
     </div>
   </div>
-  <div class="obs-hero-eyebrow">${t("lens_v")}</div>
   <h1 class="obs-hero-title">${t("buyer_title")}</h1>
-  <p class="obs-hero-sub">${langVal === "pt" ? "Sinais de compra detectados no corpus de " + serverName : "Buy signals detected on " + serverName}</p>
+  <p class="obs-hero-sub">${langVal === "pt" ? "Sinais de compra (WTB) detectados no corpus de " + serverName : "Buy signals (WTB) detected on " + serverName}</p>
 </div>
 
-<div class="method-note" style="margin-bottom:2rem">
-  ${t("methodology_note")}
+<div class="method-note" style="margin-bottom:1.5rem">
+  <strong>${t("methodology_note")}</strong>
+  <strong>${t("coverage")}: ${Math.round(data.coverage * 100)}%.</strong>
 </div>
 
-<div class="obs-grid-4" style="margin-bottom:2rem">
+<div class="obs-grid-4" style="margin-bottom:1.5rem">
   <div class="stat-card">
     <div class="stat-card-label">${t("unique_buyers")}</div>
     <div class="stat-card-val">${data.summary.unique_buyers}</div>
@@ -52,18 +58,59 @@ display(html`<div class="obs-page">
   </div>
   <div class="stat-card">
     <div class="stat-card-label">${t("top_category")}</div>
-    <div class="stat-card-val" style="font-size:1rem; text-transform:uppercase">${data.summary.top_category}</div>
+    <div class="stat-card-val">${data.summary.top_category}</div>
   </div>
   <div class="stat-card">
     <div class="stat-card-label">${t("confidence")}</div>
-    <div class="stat-card-val" style="font-size:1rem">${data.confidence}</div>
+    <div class="stat-card-val" style="font-size:0.85rem; text-transform:uppercase">${data.confidence}</div>
   </div>
 </div>
 
+</div>`);
+```
+
+```js
+// Categoria + Ranking
+display(html`<div class="obs-page" style="padding-top:0">
+<div class="obs-grid-2" style="margin-bottom:1.25rem; gap:1rem">
+  <div class="chart-wrap">
+    <div class="obs-label">${langVal === "pt" ? "Demanda por Categoria" : "Demand by Category"}</div>
+    ${Plot.plot({
+      width: 320,
+      height: 220,
+      marginLeft: 82,
+      style: { fontFamily: "var(--font-mono)", fontSize: 10, background: "transparent", color: "var(--ink-3)" },
+      marks: [
+        Plot.barX(data.by_category, { x: "count", y: "category", fill: "#c47a3a", sort: { y: "-x" } }),
+        Plot.ruleX([0], { stroke: "var(--border)" })
+      ]
+    })}
+  </div>
+  <div class="chart-wrap">
+    <div class="obs-label" style="margin-bottom:0.75rem">${t("rank")} / ${t("mentions")}</div>
+    ${html`<div>
+      ${data.top_buyers.slice(0, 12).map(function(s, i) {
+        return html`<div class="rank-row">
+          <span class="rank-n">${i + 1}</span>
+          <span class="rank-name">${s.name}</span>
+          <div class="rank-bar-cell">
+            <div class="rank-bar" style="background:#c47a3a; width:${Math.round(s.count / maxCount * 100)}px"></div>
+            <span class="rank-count">${s.count}</span>
+          </div>
+        </div>`;
+      })}
+    </div>`}
+  </div>
+</div>
+</div>`);
+```
+
+```js
+// Card de corpus
+display(html`<div class="obs-page" style="padding-top:0">
 <div class="obs-section">
   <div class="obs-label">${t("source_corpus")}</div>
   ${CorpusHealthCard(corpus)}
 </div>
-
 </div>`);
 ```
