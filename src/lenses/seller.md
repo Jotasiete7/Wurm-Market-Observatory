@@ -37,7 +37,9 @@ const maxCount = data.top_sellers[0] ? data.top_sellers[0].count : 1;
   ${LanguageSelector()}
 </div>
 </div>
-<h1 style="font-family:var(--font-title);font-size:2rem;font-weight:400;margin-bottom:0.5rem">${t("seller_title")}</h1>
+```js
+display(html`<h1 style="font-family:var(--font-title);font-size:2rem;font-weight:400;margin-bottom:0.5rem">${t("seller_title")}</h1>`)
+```
 <p style="font-size:0.75rem;color:var(--ink-3);max-width:480px;line-height:1.7">
 ${lang.value === "pt" 
   ? `Análise de quem vende, o que vendem e quando aparecem no corpus de ${server.value}.`
@@ -147,7 +149,7 @@ display(html`<div>
 </div>
 
 <div class="obs-section" style="margin-bottom:1.5rem">
-<div class="obs-label">${lang.value === "pt" ? "Itens Extraídos (Motor Semântico)" : "Extracted Items (Semantic Engine)"}</div>
+<div class="obs-label">${t("items_title")}</div>
 
 ```js
 const allItems = data.top_sellers.flatMap(function(s) { return s.parsed_items || []; });
