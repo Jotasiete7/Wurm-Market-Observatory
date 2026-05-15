@@ -9,9 +9,15 @@ import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
 import { t, LanguageSelector, ServerSelector, lang, server } from "../components/i18n.js";
 
-// Carregamento dinâmico baseado no servidor selecionado
-const meta = await FileAttachment(`../data/${server.value.toLowerCase()}-corpus-meta.json`).json();
-const data = await FileAttachment(`../data/${server.value.toLowerCase()}-buyer-activity.json`).json();
+// Carregamento estático
+const nfi_meta = await FileAttachment("../data/nfi-corpus-meta.json").json();
+const sfi_meta = await FileAttachment("../data/sfi-corpus-meta.json").json();
+const nfi_data = await FileAttachment("../data/nfi-buyer-activity.json").json();
+const sfi_data = await FileAttachment("../data/sfi-buyer-activity.json").json();
+
+// Seleção
+const meta = server.value === "NFI" ? nfi_meta : sfi_meta;
+const data = server.value === "NFI" ? nfi_data : sfi_data;
 const corpus = meta.active;
 
 const maxCount = data.top_buyers[0] ? data.top_buyers[0].count : 1;
