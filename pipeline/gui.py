@@ -81,7 +81,7 @@ class WorkbenchApp:
         hdr.pack(fill="x", padx=20)
         tk.Label(hdr, text="◆  CORPUS WORKBENCH", bg=C["bg"], fg=C["amber"],
                  font=("JetBrains Mono", 10), anchor="w").pack(side="left")
-        tk.Label(hdr, text="Wurm Market Observatory — local pipeline tool",
+        tk.Label(hdr, text="Wurm Market Observatory — ferramenta de pipeline local",
                  bg=C["bg"], fg=C["fg_dim"], font=FONT_SM, anchor="e").pack(side="right")
         ttk.Separator(self.root, orient="horizontal").pack(fill="x", padx=0)
 
@@ -112,10 +112,10 @@ class WorkbenchApp:
         self._tab_run      = ttk.Frame(nb)
 
         nb.add(self._tab_corpus,    text="  Corpus  ")
-        nb.add(self._tab_merge,     text="  Merge  ")
-        nb.add(self._tab_calibrate, text="  Calibrate  ")
-        nb.add(self._tab_settings,  text="  Settings  ")
-        nb.add(self._tab_run,       text="  Run  ")
+        nb.add(self._tab_merge,     text="  Mesclar  ")
+        nb.add(self._tab_calibrate, text="  Calibrar  ")
+        nb.add(self._tab_settings,  text="  Configurações  ")
+        nb.add(self._tab_run,       text="  Executar  ")
 
         self._build_corpus_tab(self._tab_corpus)
         self._build_merge_tab(self._tab_merge)
@@ -131,7 +131,7 @@ class WorkbenchApp:
         # File picker
         row = tk.Frame(parent, bg=C["bg"])
         row.pack(fill="x", padx=20, pady=(18, 4))
-        tk.Label(row, text="Restored corpus (.txt)", bg=C["bg"],
+        tk.Label(row, text="Corpus restaurado (.txt)", bg=C["bg"],
                  fg=C["fg_dim"], font=FONT_SM).pack(anchor="w")
 
         pick_row = tk.Frame(row, bg=C["bg"])
@@ -140,14 +140,14 @@ class WorkbenchApp:
                  font=FONT_MONO, insertbackground=C["fg"], relief="flat",
                  highlightthickness=1, highlightcolor=C["amber"],
                  highlightbackground=C["border"]).pack(side="left", fill="x", expand=True)
-        tk.Button(pick_row, text="Browse…", command=self._pick_file,
+        tk.Button(pick_row, text="Procurar…", command=self._pick_file,
                   bg=C["bg_card"], fg=C["amber"], font=FONT_SM,
                   relief="flat", padx=10, cursor="hand2",
                   activebackground=C["border"], activeforeground=C["amber"]
                   ).pack(side="left", padx=(8, 0))
 
         # Scan button
-        tk.Button(parent, text="↳  Scan Corpus", command=self._scan_corpus,
+        tk.Button(parent, text="↳  Analisar Corpus", command=self._scan_corpus,
                   bg=C["amber_dim"], fg=C["bg"], font=("JetBrains Mono", 9, "bold"),
                   relief="flat", padx=14, pady=6, cursor="hand2",
                   activebackground=C["amber"], activeforeground=C["bg"]
@@ -159,12 +159,12 @@ class WorkbenchApp:
         self._info_frame.pack(fill="x", **pad, pady=(0, 10))
         self._info_vars = {}
         fields = [
-            ("period",    "Period"),
-            ("lines",     "Log lines parsed"),
-            ("days",      "Days found"),
-            ("coverage",  "Coverage"),
-            ("gaps",      "Gaps detected"),
-            ("servers",   "Servers observed"),
+            ("period",    "Período"),
+            ("lines",     "Linhas de log lidas"),
+            ("days",      "Dias encontrados"),
+            ("coverage",  "Cobertura"),
+            ("gaps",      "Gaps (falhas) detectados"),
+            ("servers",   "Servidores observados"),
         ]
         for i, (key, label) in enumerate(fields):
             r = tk.Frame(self._info_frame, bg=C["bg_card"])
@@ -177,7 +177,7 @@ class WorkbenchApp:
                      font=FONT_MONO, anchor="w").pack(side="left")
 
         # Gap list
-        tk.Label(parent, text="Detected gaps:", bg=C["bg"],
+        tk.Label(parent, text="Gaps detectados:", bg=C["bg"],
                  fg=C["fg_dim"], font=FONT_SM).pack(anchor="w", padx=20)
         self._gap_text = tk.Text(parent, height=4, bg=C["bg_card"], fg=C["warn"],
                                  font=FONT_SM, relief="flat", state="disabled",
@@ -186,8 +186,8 @@ class WorkbenchApp:
 
     def _pick_file(self):
         path = filedialog.askopenfilename(
-            title="Select restored Wurm corpus",
-            filetypes=[("Text files", "*.txt"), ("All files", "*.*")]
+            title="Selecione o corpus restaurado do Wurm",
+            filetypes=[("Arquivos de texto", "*.txt"), ("Todos os arquivos", "*.*")]
         )
         if path:
             self.txt_path.set(path)
@@ -195,18 +195,18 @@ class WorkbenchApp:
     # ── Tab 2: Merge ─────────────────────────────────────────────────────────
 
     def _build_merge_tab(self, parent):
-        tk.Label(parent, text="Select multiple .txt files to merge into one corpus before analysis.",
+        tk.Label(parent, text="Selecione vários arquivos .txt para mesclar em um único corpus antes da análise.",
                  bg=C["bg"], fg=C["fg_dim"], font=FONT_SM).pack(anchor="w", padx=20, pady=(16, 4))
-        tk.Label(parent, text="Duplicates by day are removed. Files are merged chronologically.",
+        tk.Label(parent, text="Duplicatas por dia são removidas. Os arquivos são mesclados em ordem cronológica.",
                  bg=C["bg"], fg=C["fg_faint"], font=FONT_SM).pack(anchor="w", padx=20, pady=(0, 10))
 
         btn_row = tk.Frame(parent, bg=C["bg"])
         btn_row.pack(fill="x", padx=20, pady=(0, 8))
-        tk.Button(btn_row, text="Add Files…", command=self._merge_add_files,
+        tk.Button(btn_row, text="Adicionar Arquivos…", command=self._merge_add_files,
                   bg=C["bg_card"], fg=C["amber"], font=FONT_SM, relief="flat",
                   padx=10, cursor="hand2",
                   activebackground=C["border"]).pack(side="left")
-        tk.Button(btn_row, text="Clear List", command=self._merge_clear,
+        tk.Button(btn_row, text="Limpar Lista", command=self._merge_clear,
                   bg=C["bg_card"], fg=C["fg_dim"], font=FONT_SM, relief="flat",
                   padx=10, cursor="hand2",
                   activebackground=C["border"]).pack(side="left", padx=(6, 0))
@@ -226,18 +226,18 @@ class WorkbenchApp:
 
         merge_out_row = tk.Frame(parent, bg=C["bg"])
         merge_out_row.pack(fill="x", padx=20, pady=(0, 6))
-        tk.Label(merge_out_row, text="Save merged file as:", bg=C["bg"],
+        tk.Label(merge_out_row, text="Salvar arquivo mesclado como:", bg=C["bg"],
                  fg=C["fg_dim"], font=FONT_SM).pack(side="left")
         self._merge_out_var = tk.StringVar(value="")
         tk.Entry(merge_out_row, textvariable=self._merge_out_var, bg=C["bg_input"],
                  fg=C["fg"], font=FONT_MONO, insertbackground=C["fg"],
                  relief="flat", highlightthickness=1, highlightcolor=C["amber"],
                  highlightbackground=C["border"], width=36).pack(side="left", padx=(8, 6))
-        tk.Button(merge_out_row, text="Browse…", command=self._merge_pick_out,
+        tk.Button(merge_out_row, text="Procurar…", command=self._merge_pick_out,
                   bg=C["bg_card"], fg=C["amber"], font=FONT_SM,
                   relief="flat", padx=8, cursor="hand2").pack(side="left")
 
-        tk.Button(parent, text="⊕  Merge & Load into Corpus tab",
+        tk.Button(parent, text="⊕  Mesclar e Carregar na aba Corpus",
                   command=self._merge_run,
                   bg=C["amber_dim"], fg=C["bg"],
                   font=("JetBrains Mono", 9, "bold"),
@@ -251,8 +251,8 @@ class WorkbenchApp:
 
     def _merge_add_files(self):
         paths = filedialog.askopenfilenames(
-            title="Select Wurm .txt corpus files",
-            filetypes=[("Text files", "*.txt"), ("All files", "*.*")]
+            title="Selecione os arquivos .txt do corpus do Wurm",
+            filetypes=[("Arquivos de texto", "*.txt"), ("Todos os arquivos", "*.*")]
         )
         for p in paths:
             if p not in [str(f) for f in self._merge_files]:
@@ -269,24 +269,24 @@ class WorkbenchApp:
 
     def _merge_pick_out(self):
         path = filedialog.asksaveasfilename(
-            title="Save merged corpus as…",
+            title="Salvar corpus mesclado como…",
             defaultextension=".txt",
-            filetypes=[("Text files", "*.txt")]
+            filetypes=[("Arquivos de texto", "*.txt")]
         )
         if path:
             self._merge_out_var.set(path)
 
     def _merge_run(self):
         if not self._merge_files:
-            messagebox.showwarning("No files", "Add at least one .txt file to merge.")
+            messagebox.showwarning("Nenhum arquivo", "Adicione pelo menos um arquivo .txt para mesclar.")
             return
         out_path = self._merge_out_var.get().strip()
         if not out_path:
-            messagebox.showwarning("No output", "Choose where to save the merged file.")
+            messagebox.showwarning("Nenhuma saída", "Escolha onde salvar o arquivo mesclado.")
             return
 
-        self._merge_status.set("Merging…")
-        self.status.set("Merging files…")
+        self._merge_status.set("Mesclando…")
+        self.status.set("Mesclando arquivos…")
 
         def run():
             try:
@@ -325,13 +325,13 @@ class WorkbenchApp:
 
                 def finish():
                     self._merge_status.set(
-                        f"✓ Merged {n_files} files · {n_days} days · saved to {Path(merged_path).name}"
+                        f"✓ Mesclou {n_files} arquivos · {n_days} dias · salvo em {Path(merged_path).name}"
                     )
                     self.txt_path.set(merged_path)
-                    self.status.set("Merge complete. Go to Corpus tab and click Scan Corpus.")
-                    messagebox.showinfo("Merge complete",
-                        f"{n_files} files merged into {n_days} unique days.\n"
-                        f"File loaded into Corpus tab — click 'Scan Corpus' to analyse.")
+                    self.status.set("Mesclagem concluída. Vá para a aba Corpus e clique em Analisar Corpus.")
+                    messagebox.showinfo("Mesclagem concluída",
+                        f"{n_files} arquivos mesclados em {n_days} dias únicos.\n"
+                        f"Arquivo carregado na aba Corpus — clique em 'Analisar Corpus' para verificar.")
 
                 self.root.after(0, finish)
 
@@ -339,8 +339,8 @@ class WorkbenchApp:
                 import traceback
                 err = traceback.format_exc()
                 self.root.after(0, lambda: [
-                    self._merge_status.set(f"Error: {e}"),
-                    messagebox.showerror("Merge Error", err)
+                    self._merge_status.set(f"Erro: {e}"),
+                    messagebox.showerror("Erro na Mesclagem", err)
                 ])
 
         threading.Thread(target=run, daemon=True).start()
@@ -349,10 +349,10 @@ class WorkbenchApp:
 
     def _build_calibrate_tab(self, parent):
         tk.Label(parent,
-                 text="Paste a few lines of your real .txt here to verify the parser reads them correctly.",
+                 text="Cole algumas linhas do seu .txt real aqui para verificar se o sistema lê corretamente.",
                  bg=C["bg"], fg=C["fg_dim"], font=FONT_SM).pack(anchor="w", padx=20, pady=(16, 4))
         tk.Label(parent,
-                 text="The parser expects: [HH:MM:SS] <PlayerName> (ServerName) message text",
+                 text="O sistema espera o formato: [HH:MM:SS] <NomeDoJogador> (NomeDoServidor) texto da mensagem",
                  bg=C["bg"], fg=C["fg_faint"], font=FONT_SM).pack(anchor="w", padx=20, pady=(0, 8))
 
         input_frame = tk.Frame(parent, bg=C["bg_card"],
@@ -369,7 +369,7 @@ class WorkbenchApp:
             "[12:35:10] <IronMere> (Xanadu) WTS plate set 80ql 15s\n"
         )
 
-        tk.Button(parent, text="↳  Parse & Inspect", command=self._calib_run,
+        tk.Button(parent, text="↳  Analisar e Inspecionar", command=self._calib_run,
                   bg=C["amber_dim"], fg=C["bg"],
                   font=("JetBrains Mono", 9, "bold"),
                   relief="flat", padx=14, pady=6, cursor="hand2",
@@ -411,16 +411,16 @@ class WorkbenchApp:
             result = core.parse_file(str(tmp), self.config)
             tmp.unlink()
 
-            self._calib_write("─── Parse Result ───", "amber")
-            self._calib_write(f"  Raw lines read:  {result.total_raw_lines}", "dim")
-            self._calib_write(f"  Lines parsed OK: {len(result.lines)}", "ok" if result.lines else "warn")
-            self._calib_write(f"  Lines skipped:   {result.skipped_lines}", "dim")
-            self._calib_write(f"  Days found:      {len(result.days_found)}", "dim")
-            self._calib_write(f"  Servers:         {', '.join(sorted(result.servers_found)) or 'none'}", "dim")
+            self._calib_write("─── Resultado da Análise ───", "amber")
+            self._calib_write(f"  Linhas brutas lidas: {result.total_raw_lines}", "dim")
+            self._calib_write(f"  Linhas lidas OK:     {len(result.lines)}", "ok" if result.lines else "warn")
+            self._calib_write(f"  Linhas ignoradas:    {result.skipped_lines}", "dim")
+            self._calib_write(f"  Dias encontrados:    {len(result.days_found)}", "dim")
+            self._calib_write(f"  Servidores:          {', '.join(sorted(result.servers_found)) or 'none'}", "dim")
             self._calib_write("")
 
             if result.lines:
-                self._calib_write("─── First 5 parsed lines ───", "amber")
+                self._calib_write("─── Primeiras 5 linhas interpretadas ───", "amber")
                 for line in result.lines[:5]:
                     wts_kw = [k.lower() for k in self.config.get("cleaning", {}).get("wts_keywords", ["wts"])]
                     is_wts = any(k in line.message.lower() for k in wts_kw)
@@ -432,24 +432,24 @@ class WorkbenchApp:
                     self._calib_write(f"          {line.message[:80]}", "dim")
 
                 if len(result.lines) > 5:
-                    self._calib_write(f"  … and {len(result.lines)-5} more lines.", "dim")
+                    self._calib_write(f"  … e mais {len(result.lines)-5} linhas.", "dim")
             else:
-                self._calib_write("  ⚠ No lines parsed. Check the format matches:", "warn")
+                self._calib_write("  ⚠ Nenhuma linha interpretada. Verifique se o formato bate:", "warn")
                 self._calib_write("    [HH:MM:SS] <Player> (Server) message", "warn")
                 self._calib_write("", "")
-                self._calib_write("  If your logs use a different format, paste 5–10 real lines", "dim")
-                self._calib_write("  and share them so the parser can be adjusted.", "dim")
+                self._calib_write("  Se seus logs usam um formato diferente, cole de 5 a 10 linhas reais", "dim")
+                self._calib_write("  e compartilhe para que o leitor possa ser ajustado.", "dim")
 
         except Exception as e:
             tmp.unlink(missing_ok=True)
-            self._calib_write(f"Error: {e}", "warn")
+            self._calib_write(f"Erro: {e}", "warn")
 
     def _scan_corpus(self):
         path = self.txt_path.get().strip()
         if not path or not Path(path).exists():
-            messagebox.showerror("Error", "Please select a valid .txt file first.")
+            messagebox.showerror("Erro", "Por favor, selecione um arquivo .txt válido primeiro.")
             return
-        self.status.set("Scanning corpus…")
+        self.status.set("Analisando corpus…")
 
         def run():
             try:
@@ -462,8 +462,8 @@ class WorkbenchApp:
                 import traceback
                 err = traceback.format_exc()
                 self.root.after(0, lambda: [
-                    self.status.set(f"Error: {e}"),
-                    messagebox.showerror("Scan Error", f"Unexpected error:\n\n{err}")
+                    self.status.set(f"Erro: {e}"),
+                    messagebox.showerror("Erro na Análise", f"Erro inesperado:\n\n{err}")
                 ])
 
         threading.Thread(target=run, daemon=True).start()
@@ -485,9 +485,9 @@ class WorkbenchApp:
             for g in cov.gaps:
                 self._gap_text.insert("end", f"  ▲ {g['label']}  ({g['start']} → {g['end']})\n")
         else:
-            self._gap_text.insert("end", "  No gaps detected — full coverage.\n")
+            self._gap_text.insert("end", "  Nenhum gap detectado — cobertura total.\n")
         self._gap_text.config(state="disabled")
-        self.status.set("Corpus scanned. Ready to run.")
+        self.status.set("Corpus analisado. Pronto para executar.")
 
     # ── Tab 2: Settings ──────────────────────────────────────────────────────
 
@@ -518,49 +518,49 @@ class WorkbenchApp:
                      highlightbackground=C["border"], width=46).pack(side="left")
 
         # Output path
-        section("Output")
+        section("Saída")
         self._out_path_var = tk.StringVar(value=self.config.get("output_dir", "../src/data"))
-        kv_row(inner, "Observatory data path", self._out_path_var)
+        kv_row(inner, "Caminho de dados do Observatory", self._out_path_var)
         self._server_var = tk.StringVar(value=self.config.get("observatory", {}).get("server", "SFI"))
-        kv_row(inner, "Server (SFI / NFI)", self._server_var)
+        kv_row(inner, "Servidor (SFI / NFI)", self._server_var)
 
         # Cleaning
-        section("Cleaning Rules")
+        section("Regras de Limpeza")
         cl = self.config.get("cleaning", {})
         self._wts_var = tk.StringVar(value=", ".join(cl.get("wts_keywords", [])))
         self._wtb_var = tk.StringVar(value=", ".join(cl.get("wtb_keywords", [])))
         self._min_len_var = tk.StringVar(value=str(cl.get("min_message_length", 5)))
-        kv_row(inner, "WTS keywords (comma-separated)", self._wts_var)
-        kv_row(inner, "WTB keywords (comma-separated)", self._wtb_var)
-        kv_row(inner, "Min message length", self._min_len_var)
+        kv_row(inner, "Palavras-chave WTS (separadas por vírgula)", self._wts_var)
+        kv_row(inner, "Palavras-chave WTB (separadas por vírgula)", self._wtb_var)
+        kv_row(inner, "Tamanho mínimo da mensagem", self._min_len_var)
 
         # Lenses toggles
-        section("Lenses to Generate")
+        section("Lentes (Filtros) para Gerar")
         lens_cfg = self.config.get("lenses", {})
         self._seller_enabled = tk.BooleanVar(value=lens_cfg.get("seller_activity", {}).get("enabled", True))
         self._buyer_enabled  = tk.BooleanVar(value=lens_cfg.get("buyer_activity",  {}).get("enabled", False))
         self._top_n_var      = tk.StringVar(value=str(lens_cfg.get("seller_activity", {}).get("top_sellers_count", 10)))
         self._min_m_var      = tk.StringVar(value=str(lens_cfg.get("seller_activity", {}).get("min_mentions", 3)))
 
-        for var, label in [(self._seller_enabled, "Seller Activity"), (self._buyer_enabled, "Buyer Activity")]:
+        for var, label in [(self._seller_enabled, "Atividade de Vendedores"), (self._buyer_enabled, "Atividade de Compradores")]:
             r = tk.Frame(inner, bg=C["bg"])
             r.pack(anchor="w", padx=24, pady=2)
             tk.Checkbutton(r, text=label, variable=var, bg=C["bg"], fg=C["fg"],
                            selectcolor=C["bg_input"], activebackground=C["bg"],
                            activeforeground=C["amber"], font=FONT_MONO).pack(side="left")
 
-        kv_row(inner, "Top sellers to show", self._top_n_var)
-        kv_row(inner, "Minimum mentions", self._min_m_var)
+        kv_row(inner, "Top vendedores para mostrar", self._top_n_var)
+        kv_row(inner, "Mínimo de menções", self._min_m_var)
 
         # Categories
-        section("Item Categories  (edit config.json for full control)")
+        section("Categorias de Itens  (edite o config.json para controle total)")
         cats_text = "\n".join(f'  "{cat}": {kws}' for cat, kws in self.config.get("categories", {}).items())
         tk.Label(inner, text=cats_text, bg=C["bg_card"], fg=C["fg_dim"],
                  font=("JetBrains Mono", 8), justify="left", anchor="w",
                  padx=14, pady=10).pack(fill="x", padx=20, pady=(0, 8))
 
         # Save button
-        tk.Button(inner, text="Save Settings", command=self._save_settings,
+        tk.Button(inner, text="Salvar Configurações", command=self._save_settings,
                   bg=C["amber_dim"], fg=C["bg"], font=("JetBrains Mono", 9, "bold"),
                   relief="flat", padx=12, pady=5, cursor="hand2",
                   activebackground=C["amber"]).pack(anchor="w", padx=20, pady=12)
@@ -583,19 +583,19 @@ class WorkbenchApp:
         except ValueError:
             pass
         save_config(cfg)
-        self.status.set("Settings saved.")
-        messagebox.showinfo("Saved", "Settings saved to config.json")
+        self.status.set("Configurações salvas.")
+        messagebox.showinfo("Salvo", "Configurações salvas no config.json")
 
-    # ── Tab 3: Run ───────────────────────────────────────────────────────────
+    # ── Tab 5: Run ───────────────────────────────────────────────────────────
 
     def _build_run_tab(self, parent):
         top = tk.Frame(parent, bg=C["bg"])
         top.pack(fill="x", padx=20, pady=(16, 8))
 
-        tk.Label(top, text="Generate JSON datasets from scanned corpus.",
+        tk.Label(top, text="Gerar arquivos JSON a partir do corpus analisado.",
                  bg=C["bg"], fg=C["fg_dim"], font=FONT_SM).pack(anchor="w")
 
-        tk.Button(top, text="▶  Run Pipeline", command=self._run_pipeline,
+        tk.Button(top, text="▶  Executar Pipeline", command=self._run_pipeline,
                   bg=C["amber_dim"], fg=C["bg"],
                   font=("JetBrains Mono", 11, "bold"),
                   relief="flat", padx=20, pady=10, cursor="hand2",
@@ -634,20 +634,20 @@ class WorkbenchApp:
 
     def _run_pipeline(self):
         if not self._parse_result:
-            messagebox.showwarning("No corpus", "Go to the Corpus tab and scan a file first.")
+            messagebox.showwarning("Nenhum corpus", "Vá para a aba Corpus e analise um arquivo primeiro.")
             return
 
         self._log.config(state="normal")
         self._log.delete("1.0", "end")
         self._log.config(state="disabled")
 
-        self.status.set("Running pipeline…")
+        self.status.set("Executando pipeline…")
 
         def run():
-            self._log_write("─── Corpus Workbench Pipeline ───", "amber")
+            self._log_write("─── Pipeline Corpus Workbench ───", "amber")
             self._log_write(f"  Corpus:   {Path(self._parse_result.file_path).name}", "dim")
-            self._log_write(f"  Lines:    {len(self._parse_result.lines):,}", "dim")
-            self._log_write(f"  Coverage: {round(self._coverage.coverage_pct * 100, 1)}%", "dim")
+            self._log_write(f"  Linhas:   {len(self._parse_result.lines):,}", "dim")
+            self._log_write(f"  Cobertura:{round(self._coverage.coverage_pct * 100, 1)}%", "dim")
             self._log_write(f"  Gaps:     {len(self._coverage.gaps)}", "dim")
             self._log_write("")
 
@@ -664,21 +664,21 @@ class WorkbenchApp:
             from datetime import datetime
 
             # 1. corpus-meta.json
-            self._log_write("Generating corpus-meta.json…", "amber")
+            self._log_write("Gerando corpus-meta.json…", "amber")
             meta = core.build_corpus_meta(self._parse_result, self._coverage, self.config)
             meta_path = out_dir / "corpus-meta.json"
             with open(meta_path, "w", encoding="utf-8") as f:
                 _json.dump(meta, f, indent=2, ensure_ascii=False)
-            self._log_write(f"  ✓ corpus-meta.json written", "ok")
-            self._log_write(f"    Period:   {meta['active']['period']}", "dim")
-            self._log_write(f"    Coverage: {round(meta['active']['coverage'] * 100, 1)}%", "dim")
-            self._log_write(f"    Months:   {len(meta['all_corpora'])}", "dim")
+            self._log_write(f"  ✓ corpus-meta.json gravado", "ok")
+            self._log_write(f"    Período:   {meta['active']['period']}", "dim")
+            self._log_write(f"    Cobertura: {round(meta['active']['coverage'] * 100, 1)}%", "dim")
+            self._log_write(f"    Meses:     {len(meta['all_corpora'])}", "dim")
             self._log_write("")
 
             # 2. seller-activity.json
             lens_cfg = self.config.get("lenses", {})
             if lens_cfg.get("seller_activity", {}).get("enabled", True):
-                self._log_write("Generating seller-activity.json…", "amber")
+                self._log_write("Gerando seller-activity.json…", "amber")
                 seller_data = lens_mod.process_seller_lens(
                     self._parse_result, self._coverage, self.config
                 )
@@ -688,33 +688,33 @@ class WorkbenchApp:
                 n_sellers = seller_data["summary"]["unique_sellers"]
                 n_list    = seller_data["summary"]["total_listings"]
                 top_cat   = seller_data["summary"]["top_category"]
-                self._log_write(f"  ✓ seller-activity.json written", "ok")
-                self._log_write(f"    Unique sellers:  {n_sellers}", "dim")
-                self._log_write(f"    Total mentions:  {n_list:,}", "dim")
-                self._log_write(f"    Top category:    {top_cat}", "dim")
+                self._log_write(f"  ✓ seller-activity.json gravado", "ok")
+                self._log_write(f"    Vendedores únicos:  {n_sellers}", "dim")
+                self._log_write(f"    Total de menções:   {n_list:,}", "dim")
+                self._log_write(f"    Top categoria:      {top_cat}", "dim")
                 if seller_data["top_sellers"]:
-                    self._log_write(f"    Top seller:      {seller_data['top_sellers'][0]['name']} "
-                                    f"({seller_data['top_sellers'][0]['count']} mentions)", "dim")
+                    self._log_write(f"    Top vendedor:       {seller_data['top_sellers'][0]['name']} "
+                                    f"({seller_data['top_sellers'][0]['count']} menções)", "dim")
                 self._log_write("")
 
             # 3. buyer-activity.json
             if lens_cfg.get("buyer_activity", {}).get("enabled", False):
-                self._log_write("Generating buyer-activity.json…", "amber")
+                self._log_write("Gerando buyer-activity.json…", "amber")
                 buyer_data = lens_mod.process_buyer_lens(
                     self._parse_result, self._coverage, self.config
                 )
                 buyer_path = out_dir / "buyer-activity.json"
                 with open(buyer_path, "w", encoding="utf-8") as f:
                     _json.dump(buyer_data, f, indent=2, ensure_ascii=False)
-                self._log_write(f"  ✓ buyer-activity.json written", "ok")
-                self._log_write(f"    Unique buyers:   {buyer_data['summary']['unique_buyers']}", "dim")
+                self._log_write(f"  ✓ buyer-activity.json gravado", "ok")
+                self._log_write(f"    Compradores únicos:   {buyer_data['summary']['unique_buyers']}", "dim")
                 self._log_write("")
 
-            self._log_write("─── Pipeline complete ───────────────", "amber")
-            self._log_write(f"  Files written to: {out_dir}", "ok")
+            self._log_write("─── Pipeline concluído ───────────────", "amber")
+            self._log_write(f"  Arquivos salvos em: {out_dir}", "ok")
             self._log_write("")
-            self._log_write("  Reload your Observatory dev server to see real data.", "amber")
-            self.root.after(0, lambda: self.status.set("Done. JSON datasets ready."))
+            self._log_write("  Recarregue o dev server do Observatory para ver os dados reais.", "amber")
+            self.root.after(0, lambda: self.status.set("Concluído. Arquivos JSON prontos."))
 
         threading.Thread(target=run, daemon=True).start()
 
@@ -726,7 +726,7 @@ class WorkbenchApp:
         bar.pack(fill="x", side="bottom")
         tk.Label(bar, textvariable=self.status, bg=C["bg_card"], fg=C["fg_dim"],
                  font=FONT_SM, anchor="w", padx=12, pady=4).pack(side="left")
-        tk.Label(bar, text="No network · No database · Local only",
+        tk.Label(bar, text="Sem internet · Sem banco de dados · Apenas local",
                  bg=C["bg_card"], fg=C["fg_faint"], font=FONT_SM, anchor="e", padx=12
                  ).pack(side="right")
 
