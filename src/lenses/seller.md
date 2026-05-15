@@ -101,18 +101,18 @@ Plot.plot({
   marginLeft: 40,
   marginRight: 10,
   style: {
-    fontFamily: "JetBrains Mono, monospace",
+    fontFamily: "var(--font-mono)",
     fontSize: 10,
     background: "transparent",
-    color: "#7a7568"
+    color: "var(--ink-3)"
   },
   x: { label: null, ticks: 10 },
-  y: { label: null, grid: true, gridColor: "#e4dfd4" },
+  y: { label: null, grid: true, gridColor: "var(--border)" },
   marks: [
     Plot.barY(gaps, {
       x: "day",
       y: 320,
-      fill: "#e0dbd0",
+      fill: "var(--gap)",
       opacity: 0.6,
       rx: 1,
       title: () => "No data — gap period (not interpolated)"
@@ -120,12 +120,12 @@ Plot.plot({
     Plot.barY(observed, {
       x: "day",
       y: "count",
-      fill: "#b07d2a",
+      fill: "var(--amber)",
       opacity: 0.72,
       rx: 1,
       title: d => `Day ${d.day}: ${d.count} listings observed`
     }),
-    Plot.ruleY([0], { stroke: "#ccc8bc", strokeWidth: 0.5 })
+    Plot.ruleY([0], { stroke: "var(--border-strong)", strokeWidth: 0.5 })
   ]
 })
 ```
@@ -164,10 +164,10 @@ Plot.plot({
   marginLeft: 82,
   marginRight: 20,
   style: {
-    fontFamily: "JetBrains Mono, monospace",
+    fontFamily: "var(--font-mono)",
     fontSize: 10,
     background: "transparent",
-    color: "#7a7568"
+    color: "var(--ink-3)"
   },
   x: { label: null },
   y: { label: null },
@@ -175,13 +175,13 @@ Plot.plot({
     Plot.barX(data.by_category, {
       x: "count",
       y: "category",
-      fill: "#b07d2a",
+      fill: "var(--amber)",
       opacity: d => 0.35 + d.pct * 1.3,
       rx: 1,
       sort: { y: "-x" },
       title: d => `${d.category}: ${d.count} (${Math.round(d.pct*100)}%)`
     }),
-    Plot.ruleX([0], { stroke: "#ccc8bc", strokeWidth: 0.5 })
+    Plot.ruleX([0], { stroke: "var(--border)", strokeWidth: 0.5 })
   ]
 })
 ```

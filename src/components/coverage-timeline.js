@@ -19,7 +19,7 @@ export function CoverageTimeline(corpora) {
               class="timeline-seg ${isGap ? 'gap-seg' : ''}"
               style="
                 height: ${h}px;
-                ${!isGap ? `background: rgba(176, 125, 42, ${alpha});` : ''}
+                ${!isGap ? `background: rgba(var(--amber-rgb), ${alpha});` : ''}
                 align-self: flex-end;
               "
             >

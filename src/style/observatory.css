@@ -10,9 +10,10 @@
   --ink-3: #7a7568;
   --ink-4: #b0a99a;
   --amber: #b07d2a;
+  --amber-rgb: 176, 125, 42;
   --amber-light: #e8d09a;
   --amber-pale: #faf5e8;
-  --amber-glow: rgba(176, 125, 42, 0.12);
+  --amber-glow: rgba(var(--amber-rgb), 0.12);
   --gap: #c4bfb2;
   --gap-bg: #e4dfd4;
   --border: #ccc8bc;
@@ -27,6 +28,29 @@
 
   --radius: 4px;
   --radius-lg: 8px;
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --parch: #12110f;
+    --parch-dark: #0a0908;
+    --ink: #dcd3c1;
+    --ink-2: #b0aa9e;
+    --ink-3: #8a8477;
+    --ink-4: #5c584f;
+    --amber: #d4a259;
+    --amber-rgb: 212, 162, 89;
+    --amber-light: #b07d2a;
+    --amber-pale: #1a1814;
+    --amber-glow: rgba(var(--amber-rgb), 0.1);
+    --gap: #3d3a32;
+    --gap-bg: #22201b;
+    --border: #333029;
+    --border-strong: #4a463c;
+    --card: #1a1815;
+    --card-hover: #22201b;
+    --hatch: repeating-linear-gradient(135deg, var(--gap) 0, var(--gap) 1.5px, transparent 1.5px, transparent 5px);
+  }
 }
 
 /* ─── RESET / BASE ────────────────────────────────────── */
@@ -252,7 +276,7 @@ p  { line-height: 1.75; color: var(--ink-2); }
   font-family: var(--font-mono);
   font-weight: 400;
 }
-.lens-status.active { background: rgba(176,125,42,0.15); color: var(--amber); }
+.lens-status.active { background: rgba(var(--amber-rgb), 0.15); color: var(--amber); }
 .lens-status.partial { background: var(--gap-bg); color: var(--ink-3); }
 .lens-status.unavail { background: var(--gap-bg); color: var(--ink-4); }
 
@@ -287,7 +311,7 @@ p  { line-height: 1.75; color: var(--ink-2); }
   font-weight: 400;
   padding: 2px 8px;
   border-radius: 3px;
-  background: rgba(176, 125, 42, 0.12);
+  background: rgba(var(--amber-rgb), 0.12);
   color: var(--amber);
   letter-spacing: 0.3px;
 }
@@ -340,7 +364,7 @@ p  { line-height: 1.75; color: var(--ink-2); }
   transition: all 0.1s;
 }
 .filter-btn:hover { border-color: var(--amber); color: var(--amber); }
-.filter-btn.active { background: rgba(176,125,42,0.1); border-color: var(--amber); color: var(--amber); }
+.filter-btn.active { background: rgba(var(--amber-rgb), 0.1); border-color: var(--amber); color: var(--amber); }
 
 /* ─── HERO ────────────────────────────────────────────── */
 .obs-hero {
