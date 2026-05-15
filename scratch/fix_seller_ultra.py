@@ -1,4 +1,6 @@
----
+import sys
+
+content = r'''---
 title: Seller Activity Lens
 toc: false
 ---
@@ -141,3 +143,8 @@ ${CorpusHealthCard(corpus)}
 </div>
 
 </div>
+'''
+
+with open('src/lenses/seller.md', 'w', encoding='utf-8', newline='\r\n') as f:
+    f.write(content)
+print("seller.md updated successfully")
