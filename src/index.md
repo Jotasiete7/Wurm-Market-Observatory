@@ -44,52 +44,52 @@ const seller = await FileAttachment("data/seller-activity.json").json();
   <div class="obs-section">
     <div class="obs-label">Recent observations</div>
 
-    ```js
-    html`<div class="obs-items">
-      <div class="obs-item">
-        <div class="obs-dot"></div>
-        <div>
-          <div class="obs-text">
-            Observed surge in weapon listings during late November —
-            concentration in longswords and plate armour.
-            <strong>${seller.summary.top_category}</strong> category accounts for
-            ${Math.round(seller.summary.top_category_pct * 100)}% of all mentions.
-          </div>
-          <div class="obs-meta">seller_activity · Nov 2024 · ${Math.round(seller.coverage * 100)}% cov</div>
-        </div>
+```js
+html`<div class="obs-items">
+  <div class="obs-item">
+    <div class="obs-dot"></div>
+    <div>
+      <div class="obs-text">
+        Observed surge in weapon listings during late November —
+        concentration in longswords and plate armour.
+        <strong>${seller.summary.top_category}</strong> category accounts for
+        ${Math.round(seller.summary.top_category_pct * 100)}% of all mentions.
       </div>
-      <div class="obs-item">
-        <div class="obs-dot"></div>
-        <div>
-          <div class="obs-text">
-            Saturday activity consistently <strong>${seller.summary.peak_day_multiplier}×</strong>
-            weekday volume across all covered periods. Pattern holds across corpora.
-          </div>
-          <div class="obs-meta">trade_density · multi-corpus · partial</div>
-        </div>
+      <div class="obs-meta">seller_activity · Nov 2024 · ${Math.round(seller.coverage * 100)}% cov</div>
+    </div>
+  </div>
+  <div class="obs-item">
+    <div class="obs-dot"></div>
+    <div>
+      <div class="obs-text">
+        Saturday activity consistently <strong>${seller.summary.peak_day_multiplier}×</strong>
+        weekday volume across all covered periods. Pattern holds across corpora.
       </div>
-      <div class="obs-item">
-        <div class="obs-dot"></div>
-        <div>
-          <div class="obs-text">
-            Rare mirror mentions remain extremely sparse — fewer than 3 appearances per covered month.
-            Possibly underrepresented due to private channels.
-          </div>
-          <div class="obs-meta">rare_item · Nov 2024 · 71% cov · low confidence</div>
-        </div>
+      <div class="obs-meta">trade_density · multi-corpus · partial</div>
+    </div>
+  </div>
+  <div class="obs-item">
+    <div class="obs-dot"></div>
+    <div>
+      <div class="obs-text">
+        Rare mirror mentions remain extremely sparse — fewer than 3 appearances per covered month.
+        Possibly underrepresented due to private channels.
       </div>
-      <div class="obs-item">
-        <div class="obs-dot"></div>
-        <div>
-          <div class="obs-text">
-            Trade visibility decreases sharply during early November gaps.
-            Archival absence or genuine market lull — indeterminate from corpus alone.
-          </div>
-          <div class="obs-meta">field annotation · Nov 6–8 · unverifiable</div>
-        </div>
+      <div class="obs-meta">rare_item · Nov 2024 · 71% cov · low confidence</div>
+    </div>
+  </div>
+  <div class="obs-item">
+    <div class="obs-dot"></div>
+    <div>
+      <div class="obs-text">
+        Trade visibility decreases sharply during early November gaps.
+        Archival absence or genuine market lull — indeterminate from corpus alone.
       </div>
-    </div>`
-    ```
+      <div class="obs-meta">field annotation · Nov 6–8 · unverifiable</div>
+    </div>
+  </div>
+</div>`
+```
 
   </div>
 

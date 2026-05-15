@@ -51,12 +51,12 @@ const corpus = meta.active;
         <div class="cov-bar-gap" style="left:43%;width:9%;top:0;bottom:0;height:7px"></div>
         <div class="cov-bar-gap" style="left:71%;width:29%;top:0;bottom:0;height:7px"></div>
       </div>
-      ```js
-      html`<div style="font-size:0.65rem;color:var(--ink-4);margin-top:4px">
-        Known gaps:
-        ${corpus.gaps.map(g => html`<span style="color:#c47a3a;margin-right:0.5rem">▲ ${g.label}</span>`)}
-      </div>`
-      ```
+```js
+html`<div style="font-size:0.65rem;color:var(--ink-4);margin-top:4px">
+  Known gaps:
+  ${corpus.gaps.map(g => html`<span style="color:#c47a3a;margin-right:0.5rem">▲ ${g.label}</span>`)}
+</div>`
+```
     </div>
   </div>
 
@@ -91,44 +91,44 @@ const corpus = meta.active;
       <span class="cov-badge warn">⚠ ${Math.round(data.coverage * 100)}% coverage</span>
     </div>
 
-    ```js
-    const observed = data.daily_activity.filter(d => !d.gap);
-    const gaps     = data.daily_activity.filter(d => d.gap);
+```js
+const observed = data.daily_activity.filter(d => !d.gap);
+const gaps     = data.daily_activity.filter(d => d.gap);
 
-    Plot.plot({
-      width: 740,
-      height: 200,
-      marginLeft: 40,
-      marginRight: 10,
-      style: {
-        fontFamily: "JetBrains Mono, monospace",
-        fontSize: 10,
-        background: "transparent",
-        color: "#7a7568"
-      },
-      x: { label: null, ticks: 10 },
-      y: { label: null, grid: true, gridColor: "#e4dfd4" },
-      marks: [
-        Plot.barY(gaps, {
-          x: "day",
-          y: 320,
-          fill: "#e0dbd0",
-          opacity: 0.6,
-          rx: 1,
-          title: () => "No data — gap period (not interpolated)"
-        }),
-        Plot.barY(observed, {
-          x: "day",
-          y: "count",
-          fill: "#b07d2a",
-          opacity: 0.72,
-          rx: 1,
-          title: d => `Day ${d.day}: ${d.count} listings observed`
-        }),
-        Plot.ruleY([0], { stroke: "#ccc8bc", strokeWidth: 0.5 })
-      ]
-    })
-    ```
+Plot.plot({
+  width: 740,
+  height: 200,
+  marginLeft: 40,
+  marginRight: 10,
+  style: {
+    fontFamily: "JetBrains Mono, monospace",
+    fontSize: 10,
+    background: "transparent",
+    color: "#7a7568"
+  },
+  x: { label: null, ticks: 10 },
+  y: { label: null, grid: true, gridColor: "#e4dfd4" },
+  marks: [
+    Plot.barY(gaps, {
+      x: "day",
+      y: 320,
+      fill: "#e0dbd0",
+      opacity: 0.6,
+      rx: 1,
+      title: () => "No data — gap period (not interpolated)"
+    }),
+    Plot.barY(observed, {
+      x: "day",
+      y: "count",
+      fill: "#b07d2a",
+      opacity: 0.72,
+      rx: 1,
+      title: d => `Day ${d.day}: ${d.count} listings observed`
+    }),
+    Plot.ruleY([0], { stroke: "#ccc8bc", strokeWidth: 0.5 })
+  ]
+})
+```
 
     <div class="cov-legend" style="margin-top:0.5rem">
       <div class="cov-legend-item"><div class="cov-swatch covered"></div><span>observed activity</span></div>
@@ -157,57 +157,57 @@ const corpus = meta.active;
 
     <div class="chart-wrap">
       <div class="obs-label">Listings by category</div>
-      ```js
-      Plot.plot({
-        width: 320,
-        height: 200,
-        marginLeft: 82,
-        marginRight: 20,
-        style: {
-          fontFamily: "JetBrains Mono, monospace",
-          fontSize: 10,
-          background: "transparent",
-          color: "#7a7568"
-        },
-        x: { label: null },
-        y: { label: null },
-        marks: [
-          Plot.barX(data.by_category, {
-            x: "count",
-            y: "category",
-            fill: "#b07d2a",
-            opacity: d => 0.35 + d.pct * 1.3,
-            rx: 1,
-            sort: { y: "-x" },
-            title: d => `${d.category}: ${d.count} (${Math.round(d.pct*100)}%)`
-          }),
-          Plot.ruleX([0], { stroke: "#ccc8bc", strokeWidth: 0.5 })
-        ]
-      })
-      ```
+```js
+Plot.plot({
+  width: 320,
+  height: 200,
+  marginLeft: 82,
+  marginRight: 20,
+  style: {
+    fontFamily: "JetBrains Mono, monospace",
+    fontSize: 10,
+    background: "transparent",
+    color: "#7a7568"
+  },
+  x: { label: null },
+  y: { label: null },
+  marks: [
+    Plot.barX(data.by_category, {
+      x: "count",
+      y: "category",
+      fill: "#b07d2a",
+      opacity: d => 0.35 + d.pct * 1.3,
+      rx: 1,
+      sort: { y: "-x" },
+      title: d => `${d.category}: ${d.count} (${Math.round(d.pct*100)}%)`
+    }),
+    Plot.ruleX([0], { stroke: "#ccc8bc", strokeWidth: 0.5 })
+  ]
+})
+```
     </div>
 
     <div class="chart-wrap">
       <div class="obs-label" style="margin-bottom:0.75rem">Top sellers by listing count</div>
-      ```js
-      const maxCount = data.top_sellers[0].count;
-      html`<div>
-        ${data.top_sellers.map((s, i) => html`
-          <div class="rank-row">
-            <span class="rank-n">${i + 1}</span>
-            <span class="rank-name">${s.name}</span>
-            <div class="rank-bar-cell">
-              <div class="rank-bar" style="width:${Math.round(s.count / maxCount * 100)}px"></div>
-              <span class="rank-count">${s.count}</span>
-            </div>
-            <span class="rank-cov">${Math.round(s.coverage * 100)}%</span>
-          </div>
-        `)}
-        <p class="print-hint" style="margin-top:8px">
-          % is per-seller corpus coverage. Low-coverage sellers may be undercounted.
-        </p>
-      </div>`
-      ```
+```js
+const maxCount = data.top_sellers[0].count;
+html`<div>
+  ${data.top_sellers.map((s, i) => html`
+    <div class="rank-row">
+      <span class="rank-n">${i + 1}</span>
+      <span class="rank-name">${s.name}</span>
+      <div class="rank-bar-cell">
+        <div class="rank-bar" style="width:${Math.round(s.count / maxCount * 100)}px"></div>
+        <span class="rank-count">${s.count}</span>
+      </div>
+      <span class="rank-cov">${Math.round(s.coverage * 100)}%</span>
+    </div>
+  `)}
+  <p class="print-hint" style="margin-top:8px">
+    % is per-seller corpus coverage. Low-coverage sellers may be undercounted.
+  </p>
+</div>`
+```
     </div>
 
   </div>
