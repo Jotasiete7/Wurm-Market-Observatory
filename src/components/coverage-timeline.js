@@ -10,7 +10,7 @@ export function CoverageTimeline(corpora) {
           const pct = Math.round(c.coverage * 100);
           const h = HEIGHTS[i % HEIGHTS.length];
           const isGap = c.coverage === 0;
-          const alpha = isGap ? 0 : (0.2 + c.coverage * 0.8).toFixed(2);
+          const alpha = isGap ? 0 : (Math.pow(c.coverage, 2) * 0.85 + 0.15).toFixed(2);
           const tip = isGap
             ? `${c.month} — no data`
             : `${c.month} · ${pct}% coverage`;

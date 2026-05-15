@@ -32,8 +32,8 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --parch: #12110f;
-    --parch-dark: #0a0908;
+    --parch: #1a1814;
+    --parch-dark: #14120f;
     --ink: #dcd3c1;
     --ink-2: #b0aa9e;
     --ink-3: #8a8477;
@@ -47,8 +47,8 @@
     --gap-bg: #22201b;
     --border: #333029;
     --border-strong: #4a463c;
-    --card: #1a1815;
-    --card-hover: #22201b;
+    --card: #1f1d1a;
+    --card-hover: #262420;
     --hatch: repeating-linear-gradient(135deg, var(--gap) 0, var(--gap) 1.5px, transparent 1.5px, transparent 5px);
   }
 }
@@ -278,7 +278,7 @@ p  { line-height: 1.75; color: var(--ink-2); }
 }
 .lens-status.active { background: rgba(var(--amber-rgb), 0.15); color: var(--amber); }
 .lens-status.partial { background: var(--gap-bg); color: var(--ink-3); }
-.lens-status.unavail { background: var(--gap-bg); color: var(--ink-4); }
+.lens-status.uncharted { background: var(--gap-bg); color: var(--ink-4); }
 
 /* ─── STAT CARD ───────────────────────────────────────── */
 .stat-card {

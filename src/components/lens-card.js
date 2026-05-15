@@ -13,12 +13,11 @@ export function LensCard({ href, icon, name, insight, coverage, period, status, 
   const statusLabels = {
     active: "active",
     partial: "partial",
-    unavail: "unavailable",
     uncharted: "uncharted"
   };
 
   return html`
-    <a href="${href}" class="lens-card ${status === 'unavail' || status === 'uncharted' ? 'unavailable' : ''}" style="position:relative">
+    <a href="${href}" class="lens-card ${status === 'uncharted' ? 'unavailable' : ''}" style="position:relative">
       ${version ? html`<div class="lens-version">${version}</div>` : null}
       <i class="ti ${icon} lens-icon" aria-hidden="true"></i>
       <div class="lens-card-name">${name}</div>
