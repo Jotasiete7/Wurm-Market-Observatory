@@ -5,6 +5,7 @@ toc: false
 
 ```js
 import * as Plot from "npm:@observablehq/plot";
+import * as d3 from "npm:d3";
 import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
 
@@ -210,6 +211,49 @@ html`<div>
 ```
     </div>
 
+  </div>
+
+  <!-- EXTRACTED ITEMS SHOWCASE (from TortaApp logic) -->
+  <div class="obs-section" style="margin-bottom:1.5rem">
+    <div class="obs-label">Top Extracted Items (Parsed via Semantic Engine)</div>
+    <div class="method-note" style="margin-bottom:1rem">
+      <strong>Deep extraction active —</strong>
+      The pipeline now extracts specific item IDs, quantities, and copper values from raw strings.
+    </div>
+
+```js
+const allItems = data.top_sellers.flatMap(s => s.parsed_items || []);
+const itemsSummary = d3.rollups(allItems, 
+  v => ({
+    count: v.length,
+    totalQty: d3.sum(v, d => d.qty),
+    avgPrice: d3.mean(v, d => d.price > 0 ? d.price : NaN) || 0
+  }), 
+  d => d.name
+)
+.map(([name, stats]) => ({ name, ...stats }))
+.sort((a, b) => b.count - a.count)
+.slice(0, 10);
+
+html`
+<div style="background:var(--bg-card); border:1px solid var(--border); padding:1rem; border-radius:4px;">
+  <div style="display:flex; border-bottom:1px solid var(--border); padding-bottom:8px; margin-bottom:8px; font-family:var(--font-mono); font-size:0.75rem; color:var(--ink-4);">
+    <div style="flex:2">Item (Canonical Name)</div>
+    <div style="flex:1;text-align:right">Mentions</div>
+    <div style="flex:1;text-align:right">Total Qty</div>
+    <div style="flex:1;text-align:right">Avg Price (C)</div>
+  </div>
+  ${itemsSummary.map(d => html`
+    <div style="display:flex; padding:4px 0; font-family:var(--font-mono); font-size:0.8rem; color:var(--ink-2); border-bottom:1px dotted var(--border-light);">
+      <div style="flex:2; color:var(--amber);">${d.name}</div>
+      <div style="flex:1;text-align:right">${d.count}</div>
+      <div style="flex:1;text-align:right">${d.totalQty}</div>
+      <div style="flex:1;text-align:right; color:var(--ink-3)">${d.avgPrice > 0 ? d.avgPrice.toFixed(0) : '-'}</div>
+    </div>
+  `)}
+</div>
+`
+```
   </div>
 
   <!-- SOURCE CORPUS -->
