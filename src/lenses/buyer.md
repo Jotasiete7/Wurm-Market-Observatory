@@ -22,39 +22,46 @@ const corpus = meta.active;
 ```js
 display(html`<div class="obs-page">
 
-<div style="padding: 2rem 0; border-bottom: 1px solid var(--border); margin-bottom: 3rem;">
+<div style="padding: 2rem 0; border-bottom: 0.5px solid var(--border); margin-bottom: 2rem;">
   <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:1rem">
-    <a href="/" style="font-size:0.75rem; color:var(--amber); text-decoration:none; text-transform:uppercase; letter-spacing:1px">${t("back")}</a>
+    <a href="/" style="font-size:0.65rem; color:var(--amber); text-decoration:none; text-transform:uppercase; letter-spacing:1px">${t("back")}</a>
     <div style="display:flex; gap:8px; align-items:center;">
       ${ServerSelector()}
       ${LanguageSelector()}
     </div>
   </div>
+  <div class="obs-hero-eyebrow">${t("lens_v")}</div>
   <h1 class="obs-hero-title">${t("buyer_title")}</h1>
   <p class="obs-hero-sub">${lang.value === "pt" ? "Sinais de compra detectados no corpus de " + server.value : "Buy signals detected on " + server.value}</p>
 </div>
 
-<div style="display:grid; grid-template-columns: repeat(4, 1fr); gap:1.5rem; margin-bottom:3rem">
-  <div class="obs-card">
-    <div class="obs-label" style="margin-bottom:8px">${t("unique_buyers")}</div>
+<div class="method-note" style="margin-bottom:2rem">
+  ${t("methodology_note")}
+</div>
+
+<div class="obs-grid-4" style="margin-bottom:2rem">
+  <div class="stat-card">
+    <div class="stat-card-label">${t("unique_buyers")}</div>
     <div class="stat-card-val">${data.summary.unique_buyers}</div>
   </div>
-  <div class="obs-card">
-    <div class="obs-label" style="margin-bottom:8px">${t("signals")}</div>
+  <div class="stat-card">
+    <div class="stat-card-label">${t("signals")}</div>
     <div class="stat-card-val">${data.summary.total_signals.toLocaleString()}</div>
   </div>
-  <div class="obs-card">
-    <div class="obs-label" style="margin-bottom:8px">${t("top_category")}</div>
-    <div class="stat-card-val" style="font-size:1.1rem; text-transform:uppercase">${data.summary.top_category}</div>
+  <div class="stat-card">
+    <div class="stat-card-label">${t("top_category")}</div>
+    <div class="stat-card-val" style="font-size:1rem; text-transform:uppercase">${data.summary.top_category}</div>
   </div>
-  <div class="obs-card">
-    <div class="obs-label" style="margin-bottom:8px">${t("confidence")}</div>
-    <div class="stat-card-val" style="font-size:1rem; color:var(--success)">${data.confidence}</div>
+  <div class="stat-card">
+    <div class="stat-card-label">${t("confidence")}</div>
+    <div class="stat-card-val" style="font-size:1rem">${data.confidence}</div>
   </div>
 </div>
 
-<div class="obs-label" style="margin-bottom:1rem">${t("source_corpus")}</div>
-${CorpusHealthCard(corpus)}
+<div class="obs-section">
+  <div class="obs-label">${t("source_corpus")}</div>
+  ${CorpusHealthCard(corpus)}
+</div>
 
 </div>`);
 ```
