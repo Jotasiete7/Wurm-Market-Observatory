@@ -1,4 +1,6 @@
----
+import sys
+
+content = r'''---
 title: Observatory
 toc: false
 ---
@@ -130,3 +132,8 @@ ${LensCard({
 </div>
 
 </div>
+'''
+
+with open('src/index.md', 'w', encoding='utf-8', newline='\r\n') as f:
+    f.write(content)
+print("index.md updated with full bilingual support")

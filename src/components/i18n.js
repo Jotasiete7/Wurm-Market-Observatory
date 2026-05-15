@@ -3,6 +3,9 @@ import { Mutable } from "npm:@observablehq/stdlib";
 // Estado global do idioma (padrão Português como solicitado)
 export const lang = Mutable("pt");
 
+// Estado global do servidor (NFI por padrão)
+export const server = Mutable("NFI");
+
 const translations = {
   pt: {
     back: "← Observatório",
@@ -78,7 +81,7 @@ export function t(key) {
 
 export function LanguageSelector() {
   const select = document.createElement("select");
-  select.style.cssText = "background:transparent;border:1px solid var(--border);color:var(--amber);font-size:0.7rem;padding:2px 4px;border-radius:4px;cursor:pointer;font-family:var(--font-mono);";
+  select.style.cssText = "background:transparent;border:1px solid var(--border);color:var(--amber);font-size:0.7rem;padding:2px 4px;border-radius:4px;cursor:pointer;font-family:var(--font-mono);margin-left:8px;";
   
   const optPt = document.createElement("option");
   optPt.value = "pt";
@@ -95,6 +98,26 @@ export function LanguageSelector() {
   
   select.addEventListener("change", (e) => {
     lang.value = e.target.value;
+  });
+  
+  return select;
+}
+
+export function ServerSelector() {
+  const select = document.createElement("select");
+  select.style.cssText = "background:var(--bg-card);border:1px solid var(--border);color:var(--ink-2);font-size:0.7rem;padding:2px 4px;border-radius:4px;cursor:pointer;font-family:var(--font-mono);";
+  
+  const servers = ["NFI", "SFI"];
+  servers.forEach(s => {
+    const opt = document.createElement("option");
+    opt.value = s;
+    opt.textContent = s;
+    opt.selected = server.value === s;
+    select.appendChild(opt);
+  });
+  
+  select.addEventListener("change", (e) => {
+    server.value = e.target.value;
   });
   
   return select;

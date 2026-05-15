@@ -30,22 +30,25 @@ def run():
     out_dir = Path("src/data")
     out_dir.mkdir(parents=True, exist_ok=True)
     
+    srv_prefix = config.get("observatory", {}).get("server", "NFI").lower() + "-"
+    print(f"Output prefix: {srv_prefix}")
+    
     # 1. corpus-meta.json
-    print("Generating corpus-meta.json...")
+    print(f"Generating {srv_prefix}corpus-meta.json...")
     meta = core.build_corpus_meta(result, coverage, config)
-    with open(out_dir / "corpus-meta.json", "w", encoding="utf-8") as f:
+    with open(out_dir / f"{srv_prefix}corpus-meta.json", "w", encoding="utf-8") as f:
         json.dump(meta, f, indent=2, ensure_ascii=False)
         
     # 2. seller-activity.json
-    print("Generating seller-activity.json...")
+    print(f"Generating {srv_prefix}seller-activity.json...")
     seller_data = lens_mod.process_seller_lens(result, coverage, config)
-    with open(out_dir / "seller-activity.json", "w", encoding="utf-8") as f:
+    with open(out_dir / f"{srv_prefix}seller-activity.json", "w", encoding="utf-8") as f:
         json.dump(seller_data, f, indent=2, ensure_ascii=False)
         
     # 3. buyer-activity.json
-    print("Generating buyer-activity.json...")
+    print(f"Generating {srv_prefix}buyer-activity.json...")
     buyer_data = lens_mod.process_buyer_lens(result, coverage, config)
-    with open(out_dir / "buyer-activity.json", "w", encoding="utf-8") as f:
+    with open(out_dir / f"{srv_prefix}buyer-activity.json", "w", encoding="utf-8") as f:
         json.dump(buyer_data, f, indent=2, ensure_ascii=False)
         
     print("Pipeline complete. Files saved in src/data")
