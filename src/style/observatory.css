@@ -1,4 +1,4 @@
-﻿@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=JetBrains+Mono:wght@300;400;500&family=IM+Fell+English:ital@0;1&display=swap');
 
 
 /* ÔöÇÔöÇÔöÇ TOKENS ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
@@ -32,23 +32,23 @@
 
 @media (prefers-color-scheme: dark) {
   :root {
-    --parch: #1a1814;
-    --parch-dark: #14120f;
-    --ink: #dcd3c1;
-    --ink-2: #b0aa9e;
-    --ink-3: #8a8477;
-    --ink-4: #5c584f;
-    --amber: #d4a259;
-    --amber-rgb: 212, 162, 89;
-    --amber-light: #b07d2a;
-    --amber-pale: #1a1814;
-    --amber-glow: rgba(var(--amber-rgb), 0.1);
-    --gap: #3d3a32;
-    --gap-bg: #22201b;
-    --border: #333029;
-    --border-strong: #4a463c;
-    --card: #1f1d1a;
-    --card-hover: #262420;
+    --parch: #0c0c0a;
+    --parch-dark: #060605;
+    --ink: #f2ebe0;
+    --ink-2: #a39d90;
+    --ink-3: #7a756b;
+    --ink-4: #545149;
+    --amber: #ffb638;
+    --amber-rgb: 255, 182, 56;
+    --amber-light: #cc8b1f;
+    --amber-pale: #1c1913;
+    --amber-glow: rgba(var(--amber-rgb), 0.08);
+    --gap: #2a2822;
+    --gap-bg: #161512;
+    --border: #24221d;
+    --border-strong: #3b372e;
+    --card: #141310;
+    --card-hover: #1b1a16;
     --hatch: repeating-linear-gradient(135deg, var(--gap) 0, var(--gap) 1.5px, transparent 1.5px, transparent 5px);
   }
 }
