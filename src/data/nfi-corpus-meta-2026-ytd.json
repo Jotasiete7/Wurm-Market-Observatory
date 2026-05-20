@@ -1,0 +1,57 @@
+{
+  "active": {
+    "filename": "WurmArchive_NFI_Restored_2026_YTD.txt",
+    "server": "SFI",
+    "period": "Jan–May 2026",
+    "period_start": "2026-01-01",
+    "period_end": "2026-05-20",
+    "coverage": 0.923,
+    "log_lines": 32381,
+    "gaps": [
+      {
+        "start": "2026-03-21",
+        "end": "2026-03-21",
+        "label": "Mar 21"
+      },
+      {
+        "start": "2026-03-23",
+        "end": "2026-03-31",
+        "label": "Mar 23–31"
+      },
+      {
+        "start": "2026-04-03",
+        "end": "2026-04-03",
+        "label": "Apr 3"
+      }
+    ],
+    "generated_at": "2026-05-20",
+    "pipeline_version": "1.0.0"
+  },
+  "all_corpora": [
+    {
+      "month": "Jan 2026",
+      "coverage": 1.0,
+      "server": "NFI"
+    },
+    {
+      "month": "Feb 2026",
+      "coverage": 0.88,
+      "server": "NFI"
+    },
+    {
+      "month": "Mar 2026",
+      "coverage": 1.0,
+      "server": "NFI"
+    },
+    {
+      "month": "Apr 2026",
+      "coverage": 0.94,
+      "server": "NFI"
+    },
+    {
+      "month": "May 2026",
+      "coverage": 1.0,
+      "server": "NFI"
+    }
+  ]
+}

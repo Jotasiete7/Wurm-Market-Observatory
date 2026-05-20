@@ -1,0 +1,182 @@
+{
+  "active": {
+    "filename": "WurmArchive_SFI_Restored_12m.txt",
+    "server": "SFI",
+    "period": "Jan–Dec 2025",
+    "period_start": "2025-01-01",
+    "period_end": "2025-12-31",
+    "coverage": 0.8466,
+    "log_lines": 24721,
+    "gaps": [
+      {
+        "start": "2025-02-05",
+        "end": "2025-02-05",
+        "label": "Feb 5"
+      },
+      {
+        "start": "2025-02-08",
+        "end": "2025-02-09",
+        "label": "Feb 8–9"
+      },
+      {
+        "start": "2025-02-12",
+        "end": "2025-02-12",
+        "label": "Feb 12"
+      },
+      {
+        "start": "2025-02-15",
+        "end": "2025-02-15",
+        "label": "Feb 15"
+      },
+      {
+        "start": "2025-03-31",
+        "end": "2025-03-31",
+        "label": "Mar 31"
+      },
+      {
+        "start": "2025-04-03",
+        "end": "2025-04-04",
+        "label": "Apr 3–4"
+      },
+      {
+        "start": "2025-04-21",
+        "end": "2025-04-21",
+        "label": "Apr 21"
+      },
+      {
+        "start": "2025-05-14",
+        "end": "2025-05-14",
+        "label": "May 14"
+      },
+      {
+        "start": "2025-05-30",
+        "end": "2025-05-30",
+        "label": "May 30"
+      },
+      {
+        "start": "2025-06-03",
+        "end": "2025-06-04",
+        "label": "Jun 3–4"
+      },
+      {
+        "start": "2025-06-09",
+        "end": "2025-06-12",
+        "label": "Jun 9–12"
+      },
+      {
+        "start": "2025-06-15",
+        "end": "2025-06-15",
+        "label": "Jun 15"
+      },
+      {
+        "start": "2025-06-17",
+        "end": "2025-06-19",
+        "label": "Jun 17–19"
+      },
+      {
+        "start": "2025-06-21",
+        "end": "2025-07-05",
+        "label": "Jun 21 – Jul 5"
+      },
+      {
+        "start": "2025-07-07",
+        "end": "2025-07-08",
+        "label": "Jul 7–8"
+      },
+      {
+        "start": "2025-07-10",
+        "end": "2025-07-18",
+        "label": "Jul 10–18"
+      },
+      {
+        "start": "2025-07-21",
+        "end": "2025-07-21",
+        "label": "Jul 21"
+      },
+      {
+        "start": "2025-07-30",
+        "end": "2025-07-30",
+        "label": "Jul 30"
+      },
+      {
+        "start": "2025-08-02",
+        "end": "2025-08-02",
+        "label": "Aug 2"
+      },
+      {
+        "start": "2025-08-05",
+        "end": "2025-08-08",
+        "label": "Aug 5–8"
+      },
+      {
+        "start": "2025-08-11",
+        "end": "2025-08-12",
+        "label": "Aug 11–12"
+      }
+    ],
+    "generated_at": "2026-05-15",
+    "pipeline_version": "1.0.0"
+  },
+  "all_corpora": [
+    {
+      "month": "Jan 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Feb 2025",
+      "coverage": 0.8214,
+      "server": "SFI"
+    },
+    {
+      "month": "Mar 2025",
+      "coverage": 0.9677,
+      "server": "SFI"
+    },
+    {
+      "month": "Apr 2025",
+      "coverage": 0.9,
+      "server": "SFI"
+    },
+    {
+      "month": "May 2025",
+      "coverage": 0.9355,
+      "server": "SFI"
+    },
+    {
+      "month": "Jun 2025",
+      "coverage": 0.3333,
+      "server": "SFI"
+    },
+    {
+      "month": "Jul 2025",
+      "coverage": 0.4194,
+      "server": "SFI"
+    },
+    {
+      "month": "Aug 2025",
+      "coverage": 0.7742,
+      "server": "SFI"
+    },
+    {
+      "month": "Sep 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Oct 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Nov 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    },
+    {
+      "month": "Dec 2025",
+      "coverage": 1.0,
+      "server": "SFI"
+    }
+  ]
+}

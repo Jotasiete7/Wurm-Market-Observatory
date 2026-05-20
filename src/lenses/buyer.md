@@ -9,23 +9,48 @@ import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
 import { t, LanguageSelector, lang } from "../components/i18n.js";
 
-// Carregamento estático (roda uma vez)
-const nfi_meta = await FileAttachment("../data/nfi-corpus-meta.json").json();
-const sfi_meta = await FileAttachment("../data/sfi-corpus-meta.json").json();
-const nfi_data = await FileAttachment("../data/nfi-buyer-activity.json").json();
-const sfi_data = await FileAttachment("../data/sfi-buyer-activity.json").json();
+// Carregamento de partições de dados
+const dataPartitions = {
+  NFI: {
+    "2025": {
+      meta: FileAttachment("../data/nfi-corpus-meta-2025.json"),
+      data: FileAttachment("../data/nfi-buyer-activity-2025.json")
+    },
+    "2026-ytd": {
+      meta: FileAttachment("../data/nfi-corpus-meta-2026-ytd.json"),
+      data: FileAttachment("../data/nfi-buyer-activity-2026-ytd.json")
+    }
+  },
+  SFI: {
+    "2025": {
+      meta: FileAttachment("../data/sfi-corpus-meta-2025.json"),
+      data: FileAttachment("../data/sfi-buyer-activity-2025.json")
+    },
+    "2026-ytd": {
+      meta: FileAttachment("../data/sfi-corpus-meta-2026-ytd.json"),
+      data: FileAttachment("../data/sfi-buyer-activity-2026-ytd.json")
+    }
+  }
+};
 ```
 
 ```js
-// Seletor nativo reativo
+// Seletor nativo reativo de servidor e período
 const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
 const serverVal  = Generators.input(serverView);
+
+const periodView = Inputs.select([
+  {label: "2025 (Jan–Dec)", value: "2025"},
+  {label: "2026 (YTD)", value: "2026-ytd"}
+], {value: "2025"});
+const periodVal = Generators.input(periodView);
 ```
 
 ```js
-// Bloco reativo
-const meta     = serverVal === "NFI" ? nfi_meta : sfi_meta;
-const data     = serverVal === "NFI" ? nfi_data : sfi_data;
+// Bloco reativo — re-executa quando serverVal, periodVal ou lang mudam
+const activePartition = dataPartitions[serverVal][periodVal];
+const meta     = await activePartition.meta.json();
+const data     = await activePartition.data.json();
 const corpus   = meta.active;
 const maxCount = data.top_buyers[0] ? data.top_buyers[0].count : 1;
 const langVal  = lang.value || "pt";
@@ -43,6 +68,7 @@ display(html`<div class="obs-page">
     </div>
     <div style="display:flex; gap:8px; align-items:center;">
       ${serverView}
+      ${periodView}
       ${LanguageSelector()}
     </div>
   </div>

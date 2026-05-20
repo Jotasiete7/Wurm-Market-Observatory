@@ -10,27 +10,54 @@ import { CoverageTimeline }  from "./components/coverage-timeline.js";
 import { LensCard }          from "./components/lens-card.js";
 import { t, LanguageSelector, lang } from "./components/i18n.js";
 
-// BLOCO 1: Carregamento estático
-const nfi_meta   = await FileAttachment("data/nfi-corpus-meta.json").json();
-const sfi_meta   = await FileAttachment("data/sfi-corpus-meta.json").json();
-const nfi_seller = await FileAttachment("data/nfi-seller-activity.json").json();
-const sfi_seller = await FileAttachment("data/sfi-seller-activity.json").json();
-const nfi_buyer  = await FileAttachment("data/nfi-buyer-activity.json").json();
-const sfi_buyer  = await FileAttachment("data/sfi-buyer-activity.json").json();
+// BLOCO 1: Carregamento de partições de dados
+const dataPartitions = {
+  NFI: {
+    "2025": {
+      meta: FileAttachment("data/nfi-corpus-meta-2025.json"),
+      seller: FileAttachment("data/nfi-seller-activity-2025.json"),
+      buyer: FileAttachment("data/nfi-buyer-activity-2025.json")
+    },
+    "2026-ytd": {
+      meta: FileAttachment("data/nfi-corpus-meta-2026-ytd.json"),
+      seller: FileAttachment("data/nfi-seller-activity-2026-ytd.json"),
+      buyer: FileAttachment("data/nfi-buyer-activity-2026-ytd.json")
+    }
+  },
+  SFI: {
+    "2025": {
+      meta: FileAttachment("data/sfi-corpus-meta-2025.json"),
+      seller: FileAttachment("data/sfi-seller-activity-2025.json"),
+      buyer: FileAttachment("data/sfi-buyer-activity-2025.json")
+    },
+    "2026-ytd": {
+      meta: FileAttachment("data/sfi-corpus-meta-2026-ytd.json"),
+      seller: FileAttachment("data/sfi-seller-activity-2026-ytd.json"),
+      buyer: FileAttachment("data/sfi-buyer-activity-2026-ytd.json")
+    }
+  }
+};
 ```
 
 ```js
-// BLOCO 2: Seletor nativo reativo
+// BLOCO 2: Seletor nativo reativo de servidor e período
 const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
 const serverVal  = Generators.input(serverView);
+
+const periodView = Inputs.select([
+  {label: "2025 (Jan–Dec)", value: "2025"},
+  {label: "2026 (YTD)", value: "2026-ytd"}
+], {value: "2025"});
+const periodVal = Generators.input(periodView);
 ```
 
 ```js
-// BLOCO 3: Seleção reativa
-const meta   = serverVal === "NFI" ? nfi_meta   : sfi_meta;
+// BLOCO 3: Seleção reativa de dados baseada nas escolhas
+const activePartition = dataPartitions[serverVal][periodVal];
+const meta = await activePartition.meta.json();
 const corpus = meta.active;
-const seller = serverVal === "NFI" ? nfi_seller : sfi_seller;
-const buyer  = serverVal === "NFI" ? nfi_buyer  : sfi_buyer;
+const seller = await activePartition.seller.json();
+const buyer = await activePartition.buyer.json();
 const langVal = lang.value || "pt";
 ```
 
@@ -42,6 +69,7 @@ display(html`<div class="obs-page">
     <div class="obs-hero-eyebrow">Wurm Market Observatory</div>
     <div style="display:flex; gap:8px; align-items:center;">
       ${serverView}
+      ${periodView}
       ${LanguageSelector()}
     </div>
   </div>
@@ -79,22 +107,22 @@ display(html`<div class="obs-page">
   <div style="display:flex; flex-direction:column; gap:2rem;">
     
     <div class="obs-section" style="margin-top:0">
-      <div class="obs-label">${t("recent_obs")}</div>
+      <div class="obs-label">${langVal === "pt" ? "Crônicas do Observatório" : "Observatory Chronicles"}</div>
       <div class="obs-card" style="padding:1.25rem;">
         <div class="obs-items">
-          <div class="obs-item" style="padding-top:0">
-            <div class="obs-dot"></div>
-            <div>
-              <div class="obs-text">${t("obs_surge", { cat: seller.summary.top_category, pct: Math.round(seller.summary.top_category_pct * 100) })}</div>
-              <div class="obs-meta">${langVal === "pt" ? "atividade_vendedor" : "seller_activity"} · ${corpus.period}</div>
+          <div class="obs-chronicle-item" style="padding-top:0">
+            <span class="obs-chronicle-tag">${langVal === "pt" ? "Anomalia de Mercado" : "Market Anomaly"}</span>
+            <div class="obs-chronicle-body">
+              ${t("obs_surge", { cat: seller.summary.top_category, pct: Math.round(seller.summary.top_category_pct * 100) })}
             </div>
+            <span class="obs-chronicle-meta">${langVal === "pt" ? "atividade_vendedor" : "seller_activity"} · ${corpus.period}</span>
           </div>
-          <div class="obs-item" style="padding-bottom:0; border-bottom:none">
-            <div class="obs-dot"></div>
-            <div>
-              <div class="obs-text">${t("obs_weekend")}</div>
-              <div class="obs-meta">${langVal === "pt" ? "densidade_trade" : "trade_density"} · multi-corpus</div>
+          <div class="obs-chronicle-item" style="padding-bottom:0; border-bottom:none">
+            <span class="obs-chronicle-tag">${langVal === "pt" ? "Densidade de Trade" : "Trade Density"}</span>
+            <div class="obs-chronicle-body">
+              ${t("obs_weekend")}
             </div>
+            <span class="obs-chronicle-meta">${langVal === "pt" ? "multi-corpus" : "multi-corpus"}</span>
           </div>
         </div>
       </div>
@@ -126,4 +154,6 @@ display(html`<div class="obs-page">
   </div>
 
 </div>`);
+```
+
 ```

@@ -494,6 +494,49 @@ p  { line-height: 1.75; color: var(--ink-2); position: relative; z-index: 1; }
   margin-top: 3px;
 }
 
+/* ─── PREMIUM CHRONICLES & CURIOSITIES LEDGER ───────────────────────── */
+.obs-chronicle-item {
+  padding: 0.85rem 0 0.85rem 12px;
+  border-left: 2px solid var(--border);
+  border-bottom: 0.5px solid var(--gap-bg);
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+  transition: border-left-color 0.2s ease, background-color 0.2s ease, padding-left 0.2s ease;
+}
+.obs-chronicle-item:hover {
+  border-left-color: var(--amber);
+  background-color: var(--amber-glow);
+  padding-left: 14px;
+}
+.obs-chronicle-item:last-child {
+  border-bottom: none;
+}
+.obs-chronicle-tag {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  font-weight: 500;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--amber);
+}
+.obs-chronicle-body {
+  font-family: var(--font-title);
+  font-size: 0.95rem; /* ~15px, highly readable */
+  line-height: 1.6;
+  color: var(--ink);
+}
+.obs-chronicle-body strong {
+  color: var(--ink);
+  font-weight: 600;
+}
+.obs-chronicle-meta {
+  font-family: var(--font-mono);
+  font-size: 0.62rem;
+  color: var(--ink-3);
+  letter-spacing: 0.3px;
+}
+
 /* ÔöÇÔöÇÔöÇ PRINT HINT ÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇÔöÇ */
 .print-hint {
   font-size: 0.65rem;

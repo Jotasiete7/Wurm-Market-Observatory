@@ -7,17 +7,32 @@ toc: false
 import { html } from "npm:htl";
 import { t, LanguageSelector, lang } from "./components/i18n.js";
 
-const nfi_meta = await FileAttachment("data/nfi-corpus-meta.json").json();
-const sfi_meta = await FileAttachment("data/sfi-corpus-meta.json").json();
+const dataPartitions = {
+  NFI: {
+    "2025": FileAttachment("data/nfi-corpus-meta-2025.json"),
+    "2026-ytd": FileAttachment("data/nfi-corpus-meta-2026-ytd.json")
+  },
+  SFI: {
+    "2025": FileAttachment("data/sfi-corpus-meta-2025.json"),
+    "2026-ytd": FileAttachment("data/sfi-corpus-meta-2026-ytd.json")
+  }
+};
 ```
 
 ```js
 const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
 const serverVal  = Generators.input(serverView);
+
+const periodView = Inputs.select([
+  {label: "2025 (Jan–Dec)", value: "2025"},
+  {label: "2026 (YTD)", value: "2026-ytd"}
+], {value: "2025"});
+const periodVal = Generators.input(periodView);
 ```
 
 ```js
-const meta = serverVal === "NFI" ? nfi_meta : sfi_meta;
+const activePartition = dataPartitions[serverVal][periodVal];
+const meta = await activePartition.json();
 const langVal = lang.value || "pt";
 ```
 
@@ -29,6 +44,7 @@ display(html`<div class="obs-page">
     <div class="obs-hero-eyebrow">${t("explorer_title")}</div>
     <div style="display:flex; gap:8px; align-items:center;">
       ${serverView}
+      ${periodView}
       ${LanguageSelector()}
     </div>
   </div>
