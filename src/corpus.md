@@ -23,10 +23,10 @@ const dataPartitions = {
 const serverView = Inputs.select(["NFI", "SFI"], {value: "NFI"});
 const serverVal  = Generators.input(serverView);
 
-const periodView = Inputs.select([
-  {label: "2025 (Jan–Dec)", value: "2025"},
-  {label: "2026 (YTD)", value: "2026-ytd"}
-], {value: "2025"});
+const periodView = Inputs.select(["2025", "2026-ytd"], {
+  format: x => x === "2025" ? "2025 (Jan–Dec)" : "2026 (YTD)",
+  value: "2025"
+});
 const periodVal = Generators.input(periodView);
 ```
 
