@@ -53,7 +53,9 @@ const periodVal = Generators.input(periodView);
 
 ```js
 // BLOCO 3: Seleção reativa de dados baseada nas escolhas
-const activePartition = dataPartitions[serverVal][periodVal];
+const activeServer = serverVal === "SFI" ? "SFI" : "NFI";
+const activePeriod = periodVal === "2026-ytd" ? "2026-ytd" : "2025";
+const activePartition = dataPartitions[activeServer][activePeriod];
 const meta = await activePartition.meta.json();
 const corpus = meta.active;
 const seller = await activePartition.seller.json();

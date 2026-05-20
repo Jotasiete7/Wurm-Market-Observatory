@@ -48,7 +48,9 @@ const periodVal = Generators.input(periodView);
 
 ```js
 // Bloco reativo — re-executa quando serverVal, periodVal ou lang mudam
-const activePartition = dataPartitions[serverVal][periodVal];
+const activeServer = serverVal === "SFI" ? "SFI" : "NFI";
+const activePeriod = periodVal === "2026-ytd" ? "2026-ytd" : "2025";
+const activePartition = dataPartitions[activeServer][activePeriod];
 const meta     = await activePartition.meta.json();
 const data     = await activePartition.data.json();
 const corpus   = meta.active;

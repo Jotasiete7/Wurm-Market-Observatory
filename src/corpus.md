@@ -31,7 +31,9 @@ const periodVal = Generators.input(periodView);
 ```
 
 ```js
-const activePartition = dataPartitions[serverVal][periodVal];
+const activeServer = serverVal === "SFI" ? "SFI" : "NFI";
+const activePeriod = periodVal === "2026-ytd" ? "2026-ytd" : "2025";
+const activePartition = dataPartitions[activeServer][activePeriod];
 const meta = await activePartition.json();
 const langVal = lang.value || "pt";
 ```
