@@ -47409,5 +47409,322 @@
       "count": 111,
       "pct": 0.0055
     }
-  ]
+  ],
+  "by_weekday": [
+    {
+      "day": "Mon",
+      "day_full": "Monday",
+      "day_n": 0,
+      "count": 486,
+      "avg_per_occurrence": 23.1
+    },
+    {
+      "day": "Tue",
+      "day_full": "Tuesday",
+      "day_n": 1,
+      "count": 521,
+      "avg_per_occurrence": 24.8
+    },
+    {
+      "day": "Wed",
+      "day_full": "Wednesday",
+      "day_n": 2,
+      "count": 591,
+      "avg_per_occurrence": 28.1
+    },
+    {
+      "day": "Thu",
+      "day_full": "Thursday",
+      "day_n": 3,
+      "count": 626,
+      "avg_per_occurrence": 29.8
+    },
+    {
+      "day": "Fri",
+      "day_full": "Friday",
+      "day_n": 4,
+      "count": 800,
+      "avg_per_occurrence": 38.1
+    },
+    {
+      "day": "Sat",
+      "day_full": "Saturday",
+      "day_n": 5,
+      "count": 939,
+      "avg_per_occurrence": 44.7
+    },
+    {
+      "day": "Sun",
+      "day_full": "Sunday",
+      "day_n": 6,
+      "count": 834,
+      "avg_per_occurrence": 39.7
+    }
+  ],
+  "tokens": {
+    "items": [
+      {
+        "text": "Iron Ore",
+        "count": 374
+      },
+      {
+        "text": "Planks",
+        "count": 312
+      },
+      {
+        "text": "Logs",
+        "count": 289
+      },
+      {
+        "text": "Wool",
+        "count": 244
+      },
+      {
+        "text": "Rope",
+        "count": 201
+      },
+      {
+        "text": "Sleep Powder",
+        "count": 173
+      },
+      {
+        "text": "Cotton",
+        "count": 159
+      },
+      {
+        "text": "Longsword",
+        "count": 146
+      },
+      {
+        "text": "Horse",
+        "count": 134
+      },
+      {
+        "text": "Large Anvil",
+        "count": 125
+      },
+      {
+        "text": "Plate Armour",
+        "count": 115
+      },
+      {
+        "text": "Pickaxe",
+        "count": 101
+      },
+      {
+        "text": "Saw",
+        "count": 91
+      },
+      {
+        "text": "Corbita",
+        "count": 81
+      },
+      {
+        "text": "Healing Cover",
+        "count": 77
+      },
+      {
+        "text": "Stone Brick",
+        "count": 72
+      },
+      {
+        "text": "Meal",
+        "count": 70
+      },
+      {
+        "text": "Knarr",
+        "count": 62
+      },
+      {
+        "text": "Chain Armour",
+        "count": 60
+      },
+      {
+        "text": "Shovel",
+        "count": 57
+      },
+      {
+        "text": "File",
+        "count": 55
+      },
+      {
+        "text": "Whetstone",
+        "count": 52
+      },
+      {
+        "text": "Helm",
+        "count": 49
+      },
+      {
+        "text": "Rune",
+        "count": 45
+      },
+      {
+        "text": "Gem",
+        "count": 42
+      },
+      {
+        "text": "Saddle",
+        "count": 39
+      },
+      {
+        "text": "Grindstone",
+        "count": 36
+      },
+      {
+        "text": "Lump",
+        "count": 34
+      },
+      {
+        "text": "Bulk Storage Bin",
+        "count": 32
+      },
+      {
+        "text": "Crate",
+        "count": 30
+      }
+    ],
+    "enchants": [
+      {
+        "text": "Circle of Cunning",
+        "count": 260
+      },
+      {
+        "text": "Wind of Ages",
+        "count": 251
+      },
+      {
+        "text": "Blessing of the Dark",
+        "count": 173
+      },
+      {
+        "text": "Life Transfer",
+        "count": 163
+      },
+      {
+        "text": "Nimbleness",
+        "count": 143
+      },
+      {
+        "text": "Frostbrand",
+        "count": 88
+      },
+      {
+        "text": "Flaming Aura",
+        "count": 83
+      },
+      {
+        "text": "Aura of Shared Pain",
+        "count": 73
+      },
+      {
+        "text": "Courier",
+        "count": 70
+      },
+      {
+        "text": "Venom",
+        "count": 59
+      },
+      {
+        "text": "Mind Stealer",
+        "count": 49
+      },
+      {
+        "text": "Web Armour",
+        "count": 39
+      }
+    ],
+    "professions": [
+      {
+        "text": "Smithing",
+        "count": 227
+      },
+      {
+        "text": "Channeling",
+        "count": 159
+      },
+      {
+        "text": "Carpentry",
+        "count": 125
+      },
+      {
+        "text": "Tailoring",
+        "count": 101
+      },
+      {
+        "text": "Leatherworking",
+        "count": 81
+      },
+      {
+        "text": "Cooking",
+        "count": 70
+      },
+      {
+        "text": "Masonry",
+        "count": 59
+      },
+      {
+        "text": "Shipbuilding",
+        "count": 49
+      },
+      {
+        "text": "Jewelry",
+        "count": 39
+      },
+      {
+        "text": "Animal Husbandry",
+        "count": 32
+      },
+      {
+        "text": "Farming",
+        "count": 27
+      },
+      {
+        "text": "Forestry",
+        "count": 21
+      }
+    ],
+    "services": [
+      {
+        "text": "Improving",
+        "count": 520
+      },
+      {
+        "text": "Enchanting",
+        "count": 373
+      },
+      {
+        "text": "Transport",
+        "count": 102
+      },
+      {
+        "text": "Bridge Construction",
+        "count": 59
+      },
+      {
+        "text": "Terraforming",
+        "count": 53
+      },
+      {
+        "text": "Butchering",
+        "count": 39
+      },
+      {
+        "text": "Highway Construction",
+        "count": 30
+      },
+      {
+        "text": "Delivery",
+        "count": 28
+      },
+      {
+        "text": "Guide Service",
+        "count": 18
+      },
+      {
+        "text": "Training",
+        "count": 15
+      }
+    ]
+  }
 }

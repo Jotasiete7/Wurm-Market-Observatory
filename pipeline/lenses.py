@@ -5,9 +5,10 @@ Each function takes a ParseResult + config and returns a JSON-ready dict.
 
 import re
 from datetime import date
-from collections import defaultdict
+from collections import defaultdict, Counter
 from core import ParseResult, CoverageResult
 import parser_utils
+import lexicon
 
 
 # ─── Seller Activity Lens ────────────────────────────────────────────────────
@@ -127,6 +128,13 @@ def process_seller_lens(result: ParseResult, cov: CoverageResult, config: dict) 
     today = datetime.now().strftime("%Y-%m-%d")
     path  = result.file_path
 
+    # ── Weekday breakdown ──────────────────────────────────────────────────
+    by_weekday = _build_weekday_breakdown(wts_lines, covered_days)
+
+    # ── Token extraction for word clouds ──────────────────────────────────
+    all_wts_messages = [l.message for l in wts_lines]
+    tokens = _extract_tokens(all_wts_messages, top_n=60)
+
     return {
         "lens":         "seller_activity",
         "corpus":       str(path).split("\\")[-1].split("/")[-1],
@@ -144,7 +152,9 @@ def process_seller_lens(result: ParseResult, cov: CoverageResult, config: dict) 
         },
         "daily_activity": daily_activity,
         "top_sellers":    top_sellers,
-        "by_category":    by_category
+        "by_category":    by_category,
+        "by_weekday":     by_weekday,
+        "tokens":         tokens
     }
 
 
@@ -224,6 +234,14 @@ def process_buyer_lens(result: ParseResult, cov: CoverageResult, config: dict) -
     from datetime import datetime
     today = datetime.now().strftime("%Y-%m-%d")
 
+    # ── Weekday breakdown ──────────────────────────────────────────────────
+    covered_days = set(cov.days_found)
+    by_weekday = _build_weekday_breakdown(wtb_lines, covered_days)
+
+    # ── Token extraction for word clouds ──────────────────────────────────
+    all_wtb_messages = [l.message for l in wtb_lines]
+    tokens = _extract_tokens(all_wtb_messages, top_n=60)
+
     return {
         "lens":         "buyer_activity",
         "corpus":       str(result.file_path).split("\\")[-1].split("/")[-1],
@@ -238,7 +256,9 @@ def process_buyer_lens(result: ParseResult, cov: CoverageResult, config: dict) -
             "top_category_pct": by_category[0]["pct"]      if by_category else 0.0
         },
         "top_buyers":   buyers[:top_n],
-        "by_category":  by_category
+        "by_category":  by_category,
+        "by_weekday":   by_weekday,
+        "tokens":       tokens
     }
 
 
@@ -314,8 +334,100 @@ def _peak_day(daily_counts: dict, days_found: list) -> tuple:
     return (peak, multiplier)
 
 
+def _build_weekday_breakdown(lines: list, covered_days: set) -> list:
+    """
+    Builds a day-of-week activity breakdown from a list of log lines.
+    Returns list of 7 dicts ordered Mon→Sun with counts and avg per week.
+    """
+    DOW_ORDER = ["Monday", "Tuesday", "Wednesday", "Thursday",
+                 "Friday", "Saturday", "Sunday"]
+    DOW_SHORT = ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"]
+
+    dow_counts = defaultdict(int)   # total posts per weekday
+    dow_days   = defaultdict(set)   # set of actual calendar dates per weekday
+
+    for line in lines:
+        if line.day in covered_days:
+            wd = line.day.strftime("%A")
+            dow_counts[wd] += 1
+            dow_days[wd].add(line.day)
+
+    result = []
+    for i, wd in enumerate(DOW_ORDER):
+        count    = dow_counts.get(wd, 0)
+        n_days   = max(len(dow_days.get(wd, set())), 1)
+        avg_week = round(count / n_days, 1)
+        result.append({
+            "day":      DOW_SHORT[i],
+            "day_full": wd,
+            "day_n":    i,
+            "count":    count,
+            "avg_per_occurrence": avg_week
+        })
+    return result
+
+
+def _extract_tokens(messages: list, top_n: int = 60) -> dict:
+    """
+    Scan a list of messages and count matches against curated Wurm lexicons.
+    Returns dict with top items, enchants, professions and services,
+    each as a list of {text, count} sorted by frequency.
+    """
+    item_counts       = Counter()
+    enchant_counts    = Counter()
+    profession_counts = Counter()
+    service_counts    = Counter()
+
+    # Sort keys longest-first so multi-word phrases match before substrings
+    item_keys   = sorted(lexicon.ITEMS.keys(),       key=len, reverse=True)
+    ench_keys   = sorted(lexicon.ENCHANTS.keys(),    key=len, reverse=True)
+    prof_keys   = sorted(lexicon.PROFESSIONS.keys(), key=len, reverse=True)
+    serv_keys   = sorted(lexicon.SERVICES.keys(),    key=len, reverse=True)
+
+    for msg in messages:
+        text = " " + msg.lower() + " "   # pad for whole-word boundary matching
+
+        for key in item_keys:
+            pattern = re.escape(key)
+            if re.search(rf"(?<![a-z]){pattern}(?![a-z])", text):
+                canonical = lexicon.ITEMS[key]
+                item_counts[canonical] += 1
+
+        for key in ench_keys:
+            pattern = re.escape(key)
+            if re.search(rf"(?<![a-z]){pattern}(?![a-z])", text):
+                canonical = lexicon.ENCHANTS[key]
+                enchant_counts[canonical] += 1
+
+        for key in prof_keys:
+            pattern = re.escape(key)
+            if re.search(rf"(?<![a-z]){pattern}(?![a-z])", text):
+                canonical = lexicon.PROFESSIONS[key]
+                profession_counts[canonical] += 1
+
+        for key in serv_keys:
+            pattern = re.escape(key)
+            if re.search(rf"(?<![a-z]){pattern}(?![a-z])", text):
+                canonical = lexicon.SERVICES[key]
+                service_counts[canonical] += 1
+
+    def _top(counter, n):
+        return [
+            {"text": name, "count": count}
+            for name, count in counter.most_common(n)
+        ]
+
+    return {
+        "items":       _top(item_counts,       top_n),
+        "enchants":    _top(enchant_counts,    top_n),
+        "professions": _top(profession_counts, top_n),
+        "services":    _top(service_counts,    top_n),
+    }
+
+
 def _empty_seller_json(result: ParseResult, cov: CoverageResult, config: dict) -> dict:
     from datetime import datetime
+    empty_tokens = {"items": [], "enchants": [], "professions": [], "services": []}
     return {
         "lens":         "seller_activity",
         "corpus":       str(result.file_path).split("\\")[-1].split("/")[-1],
@@ -330,5 +442,7 @@ def _empty_seller_json(result: ParseResult, cov: CoverageResult, config: dict) -
         },
         "daily_activity": [],
         "top_sellers":    [],
-        "by_category":    []
+        "by_category":    [],
+        "by_weekday":     [],
+        "tokens":         empty_tokens
     }

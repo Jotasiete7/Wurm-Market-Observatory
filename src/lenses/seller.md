@@ -8,6 +8,8 @@ import * as Plot from "npm:@observablehq/plot";
 import { html } from "npm:htl";
 import { CorpusHealthCard } from "../components/corpus-health.js";
 import { t, LanguageSelector, lang } from "../components/i18n.js";
+import { WeekdayChartSingle } from "../components/weekday-chart.js";
+import { TokenCloud, TokenBar } from "../components/token-cloud.js";
 
 // Carregamento de partições de dados
 const dataPartitions = {
@@ -165,5 +167,55 @@ display(html`<div class="obs-page" style="padding-top:0">
   <div class="obs-label">${t("source_corpus")}</div>
   ${CorpusHealthCard(corpus)}
 </div>
+</div>`);
+```
+
+```js
+// ── Atividade por Dia da Semana / Weekday Activity ────────────────────────
+const wdData = data.by_weekday || [];
+display(html`<div class="obs-page" style="padding-top:0">
+<div class="obs-section">
+  <div class="chart-wrap">
+    <div class="chart-header">
+      <div class="obs-label" style="margin-bottom:0">
+        ${langVal === "pt" ? "Atividade por Dia da Semana — WTS" : "Activity by Weekday — WTS"}
+      </div>
+      ${wdData.length ? html`<span class="cov-badge">${
+        (() => { const peak = wdData.reduce((a,b)=>a.count>b.count?a:b,wdData[0]); return peak.day; })()
+      } ★</span>` : ""}
+    </div>
+    ${WeekdayChartSingle(wdData, "WTS", { lang: langVal, width: 680 })}
+  </div>
+</div>
+</div>`);
+```
+
+```js
+// ── Nuvem de Tokens / Token Clouds ───────────────────────────────────────
+const tk = data.tokens || { items: [], enchants: [], professions: [], services: [] };
+display(html`<div class="obs-page" style="padding-top:0">
+
+<div class="obs-section">
+  <div class="obs-label">${langVal === "pt" ? "Itens mais listados" : "Most listed items"}</div>
+  <div class="obs-card" style="padding:1.25rem">
+    ${TokenCloud(tk.items, { lang: langVal, maxWords: 35 })}
+  </div>
+</div>
+
+<div class="obs-grid-2" style="margin-top:1.5rem;gap:1rem">
+  <div class="chart-wrap">
+    ${TokenBar(tk.enchants, {
+      title: langVal === "pt" ? "Enchants mencionados" : "Enchants mentioned",
+      lang: langVal, maxItems: 12
+    })}
+  </div>
+  <div class="chart-wrap">
+    ${TokenBar(tk.professions, {
+      title: langVal === "pt" ? "Profissões / Serviços" : "Professions / Services",
+      lang: langVal, maxItems: 12, color: "#7a9ec4"
+    })}
+  </div>
+</div>
+
 </div>`);
 ```
